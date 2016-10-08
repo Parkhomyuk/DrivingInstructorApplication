@@ -6,5 +6,6 @@
     <string name="DrivingInstructors">Driving Instructors</string>
     <string name="sort">sorting</string>
     <string name="filters">filters</string>
+    <string name="TabInstructorActivity">Tab of Instructors</string>
 
 </resources>

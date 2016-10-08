@@ -83,7 +83,7 @@ public class TabInstructorActivity extends AppCompatActivity {
         fragmentOne.setArguments(bundle1);
         //Fragment TWO of TableInstructor
         Bundle bundle2= new Bundle();
-        bundle2.putString("text1",textActivityMe);
+        bundle2.putString("text2",textActivityMe);
         TwoFragmet fragmentTwo= new TwoFragmet();
         fragmentTwo.setArguments(bundle2);
         //Fragment THREE of TableInstructor
@@ -127,7 +127,7 @@ public class TabInstructorActivity extends AppCompatActivity {
         }
     }
     @SuppressLint("ValidFragment")
-    public class OneFragment extends Fragment {
+    public static class OneFragment extends Fragment {
         public OneFragment() {
         }
 
@@ -148,7 +148,7 @@ public class TabInstructorActivity extends AppCompatActivity {
         }
     }
     @SuppressLint("ValidFragment")
-    public class TwoFragmet extends Fragment {
+    public static class TwoFragmet extends Fragment {
 
         public TwoFragmet() {
         }
@@ -166,11 +166,11 @@ public class TabInstructorActivity extends AppCompatActivity {
 
             View v=inflater.inflate(R.layout.fragment_two,container,false);
             TextView tv=((TextView)v.findViewById(R.id.frMe));
-            tv.setText(getArguments().getString("text1"));
+            tv.setText(getArguments().getString("text2"));
             return v;
         }
     }
-    public class ThreeFragment extends Fragment {
+    public static class ThreeFragment extends Fragment {
         public ThreeFragment() {
         }
         @Override

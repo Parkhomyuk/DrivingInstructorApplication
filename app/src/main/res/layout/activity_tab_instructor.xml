@@ -24,14 +24,16 @@
             android:id="@+id/instructorN"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="8dp"
-                android:paddingTop="8dp">
+                android:paddingTop="8dp"
+                android:layout_weight="0.4"
+                >
             <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/christophe"
                 android:layout_alignParentLeft="true"
                 android:id="@+id/im"
@@ -40,17 +42,17 @@
                 <TextView
                     android:id="@+id/atName"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="John Lennon"
                     android:textSize="24sp"
                     android:layout_gravity="center_horizontal"
-
+                    android:textAlignment="center"
                     android:textColor="#060505" />
             </LinearLayout>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-
+                android:layout_weight="0.6"
                 android:orientation="vertical"
                 android:layout_marginRight="0dp"
                 android:paddingTop="0dp"
@@ -80,7 +82,7 @@
                     android:id="@+id/atAge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Age: 23"
+                    android:text=" 23"
                     android:textSize="16sp"
                     android:textColor="#060505"
                     android:layout_marginTop="8dp" />
@@ -102,7 +104,7 @@
                     android:id="@+id/atExp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Experience: 8 year"
+                    android:text="8 year"
                     android:textSize="16sp"
                     android:textColor="#060505"
                     android:layout_marginTop="8dp" />
