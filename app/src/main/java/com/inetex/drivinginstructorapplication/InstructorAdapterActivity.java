@@ -2,6 +2,7 @@ package com.inetex.drivinginstructorapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -68,7 +69,9 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         navigationView.setNavigationItemSelectedListener(this);*/
 
         //-------------------------adapter------------------
-        fillData();
+      //  fillData();
+        GetInstructors instructors=new GetInstructors();
+        instructors.execute(insts);
         TextView quantity= (TextView)findViewById(R.id.quantity);
 
         quantity.setText(String.valueOf(insts.size())+" Instructors");
@@ -220,7 +223,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
 
     // генерируем данные для адаптера
-    void fillData() {
+   /* void fillData() {
 
         insts.add(new Instructors("Dodik Moshe", "Tel Aviv", R.drawable.christophe, " 24 year", "2 year", "24", "A"));
         insts.add(new Instructors("Angelina Jolie", "Tel Aviv", R.drawable.angela, " 40 year", "12 year", " 84", "A B"));
@@ -241,7 +244,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         insts.add(new Instructors("Rohel Bell", "Ashkelon", R.drawable.savta, " 64 year", "15 year", " 55", "A B"));
         insts.add(new Instructors("David Zukerman", "Ashdod", R.drawable.saba2, " 88 year", "55 year", " 102", "A B C D"));
 
-    }
+    }*/
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Instructors instructors=insts.get(position);
@@ -267,5 +270,54 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
         startActivity(intent);
     }
+    class GetInstructors extends AsyncTask<ArrayList<Instructors>,ArrayList<Instructors>,  ArrayList<Instructors>> {
 
-}
+
+        public GetInstructors() {
+        }
+
+        @Override
+        protected ArrayList<Instructors> doInBackground(ArrayList<Instructors>... params) {
+            try {
+                insts.add(new Instructors("Dodik Moshe", "Tel Aviv", R.drawable.christophe, " 24 year", "2 year", "24", "A"));
+                insts.add(new Instructors("Angelina Jolie", "Tel Aviv", R.drawable.angela, " 40 year", "12 year", " 84", "A B"));
+                insts.add(new Instructors("Tom Zat", "Netania", R.drawable.z, " 27 year", "4 year", " 42", "A B C"));
+                insts.add(new Instructors("Bruce Willis", "Netania", R.drawable.bruce, " 52 year", "15 year", " 26", "A B C D"));
+                insts.add(new Instructors("Zipora Zukerman", "Irusalim", R.drawable.savta, " 60 year", "27 year", " 17", "A B "));
+                insts.add(new Instructors("Tom Cruze", "Irusalim", R.drawable.tom, " 50 year", "17 year", " 85", "A B C D"));
+                insts.add(new Instructors("Bill Geist", "Tel Aviv", R.drawable.bill, " 62 year", "22 year", " 48", "A B C D"));
+                insts.add(new Instructors("Rostik Shahar", "Haifa", R.drawable.toto, " 27 year", "4 year", " 12", "B"));
+                insts.add(new Instructors("Barack Abama", "Haifa", R.drawable.barack, " 55 year", "20 year", " 44", "A B"));
+                insts.add(new Instructors("Jastin Timberlake", "Rehovot", R.drawable.tim, " 35 year", "11 year", " 48", "A B C"));
+                insts.add(new Instructors("Brad Pit", "Rehovot", R.drawable.brad, " 45 year", "18 year", " 68", "A B C D"));
+                insts.add(new Instructors("Haim Kaz", "Netania", R.drawable.buch, " 52 year", "25 year", " 55", "C D"));
+                insts.add(new Instructors("Rafik Golubian", "Tel Aviv", R.drawable.daty, " 34 year", "8 year", " 24", "A C D"));
+                insts.add(new Instructors("Lusy Zack", "Tel Aviv", R.drawable.lucy, " 24 year", "1 year", " 24", "A B"));
+                insts.add(new Instructors("Jack Nicolson", "Tel Aviv", R.drawable.nicola, " 62 year", "28 year", " 88", "A B C D"));
+                insts.add(new Instructors("Yosy Ferdman", "Ashdod", R.drawable.saba, " 74 year", "35 year", " 98", "A B C D"));
+                insts.add(new Instructors("Rohel Bell", "Ashkelon", R.drawable.savta, " 64 year", "15 year", " 55", "A B"));
+                insts.add(new Instructors("David Zukerman", "Ashdod", R.drawable.saba2, " 88 year", "55 year", " 102", "A B C D"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return insts;
+        }
+
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+
+
+        @Override
+        protected void onPostExecute(ArrayList<Instructors> instructorses) {
+            super.onPostExecute(instructorses);
+insts=instructorses;
+        }
+    }
+    }
+
