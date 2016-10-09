@@ -43,7 +43,13 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     private String[] mSexArray = new String[] { "no matter", "Man", "Woman" };
     private String[] mReligArray = new String[] { "no matter", "Yes", "No" };
     //varible
-
+    TextView quantity;
+    Map<String, String> map;
+    final ArrayList<Map<String,String>> groupDataList= new ArrayList<>();
+    //Create a shared collection of items for collections
+    final ArrayList<ArrayList<Map<String, String>>> сhildDataList = new ArrayList<>();
+    // create a collection of items for the City group
+    ArrayList<Map<String, String>> сhildDataItemList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,13 +75,15 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         navigationView.setNavigationItemSelectedListener(this);*/
 
         //-------------------------adapter------------------
-      //  fillData();
+       //AsyncTask filldata
         GetInstructors instructors=new GetInstructors();
-        instructors.execute(insts);
-        TextView quantity= (TextView)findViewById(R.id.quantity);
+        instructors.execute();
+        //
+         quantity= (TextView)findViewById(R.id.quantity);
 
-        quantity.setText(String.valueOf(insts.size())+" Instructors");
+
         boxAdapter = new BoxAdapter(this, insts);
+
         // настраиваем список
         ListView lvMain = (ListView) findViewById(R.id.instVar);
 
@@ -86,32 +94,32 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
         //Filters in sliding left menu
         //------------ExpandbleListView City, Vechicle,Transsmission,Experrience,Rating--------------------
-        Map<String, String> map;
-        final ArrayList<Map<String,String>> groupDataList=new ArrayList<>();
+
+      /*  final ArrayList<Map<String,String>> groupDataList=new ArrayList<>();*/
         //complete the collection of groups from the array with the names of groups
-        for(String group: mGroupsArray){
+        /*for(String group: mGroupsArray){
             map=new HashMap<>();
             map.put("groupName",group);
             groupDataList.add(map);
-        }
+        }*/
         // a list of attribute groups to read
         String groupFrom[] = new String[] { "groupName" };
         // list ID view-elements, which will be placed groups attributes
         int groupTo[] = new int[] { android.R.id.text1 };
         //Create a shared collection of items for collections
-        final ArrayList<ArrayList<Map<String, String>>> сhildDataList = new ArrayList<>();
+       /* final ArrayList<ArrayList<Map<String, String>>> сhildDataList = new ArrayList<>();
         // create a collection of items for the City group
-        ArrayList<Map<String, String>> сhildDataItemList = new ArrayList<>();
+        ArrayList<Map<String, String>> сhildDataItemList = new ArrayList<>();*/
         // fill the list of attributes for each element
-        for (String city : mCityArray) {
+       /* for (String city : mCityArray) {
             map = new HashMap<>();
             map.put("name", city); // name of city
             сhildDataItemList.add(map);
         }
         // add to the collection of collections
-        сhildDataList.add(сhildDataItemList);
+        сhildDataList.add(сhildDataItemList);*/
 
-        //create a collection of items for the vechile
+        /*//create a collection of items for the vechile
         сhildDataItemList=new ArrayList<>();
         for(String vichele: mTypeVehicleArray){
             map=new HashMap<>();
@@ -158,7 +166,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
             map.put("name",relig);
             сhildDataItemList.add(map);
         }
-        сhildDataList.add(сhildDataItemList);
+        сhildDataList.add(сhildDataItemList);*/
         // a list of attribute elements to read
         String childFrom[] = new String[] { "name" };
 
@@ -222,29 +230,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     }
 
 
-    // генерируем данные для адаптера
-   /* void fillData() {
 
-        insts.add(new Instructors("Dodik Moshe", "Tel Aviv", R.drawable.christophe, " 24 year", "2 year", "24", "A"));
-        insts.add(new Instructors("Angelina Jolie", "Tel Aviv", R.drawable.angela, " 40 year", "12 year", " 84", "A B"));
-        insts.add(new Instructors("Tom Zat", "Netania", R.drawable.z, " 27 year", "4 year", " 42", "A B C"));
-        insts.add(new Instructors("Bruce Willis", "Netania", R.drawable.bruce, " 52 year", "15 year", " 26", "A B C D"));
-        insts.add(new Instructors("Zipora Zukerman", "Irusalim", R.drawable.savta, " 60 year", "27 year", " 17", "A B "));
-        insts.add(new Instructors("Tom Cruze", "Irusalim", R.drawable.tom, " 50 year", "17 year", " 85", "A B C D"));
-        insts.add(new Instructors("Bill Geist", "Tel Aviv", R.drawable.bill, " 62 year", "22 year", " 48", "A B C D"));
-        insts.add(new Instructors("Rostik Shahar", "Haifa", R.drawable.toto, " 27 year", "4 year", " 12", "B"));
-        insts.add(new Instructors("Barack Abama", "Haifa", R.drawable.barack, " 55 year", "20 year", " 44", "A B"));
-        insts.add(new Instructors("Jastin Timberlake", "Rehovot", R.drawable.tim, " 35 year", "11 year", " 48", "A B C"));
-        insts.add(new Instructors("Brad Pit", "Rehovot", R.drawable.brad, " 45 year", "18 year", " 68", "A B C D"));
-        insts.add(new Instructors("Haim Kaz", "Netania", R.drawable.buch, " 52 year", "25 year", " 55", "C D"));
-        insts.add(new Instructors("Rafik Golubian", "Tel Aviv", R.drawable.daty, " 34 year", "8 year", " 24", "A C D"));
-        insts.add(new Instructors("Lusy Zack", "Tel Aviv", R.drawable.lucy, " 24 year", "1 year", " 24", "A B"));
-        insts.add(new Instructors("Jack Nicolson", "Tel Aviv", R.drawable.nicola, " 62 year", "28 year", " 88", "A B C D"));
-        insts.add(new Instructors("Yosy Ferdman", "Ashdod", R.drawable.saba, " 74 year", "35 year", " 98", "A B C D"));
-        insts.add(new Instructors("Rohel Bell", "Ashkelon", R.drawable.savta, " 64 year", "15 year", " 55", "A B"));
-        insts.add(new Instructors("David Zukerman", "Ashdod", R.drawable.saba2, " 88 year", "55 year", " 102", "A B C D"));
-
-    }*/
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Instructors instructors=insts.get(position);
@@ -270,14 +256,14 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
         startActivity(intent);
     }
-    class GetInstructors extends AsyncTask<ArrayList<Instructors>,ArrayList<Instructors>,  ArrayList<Instructors>> {
+    class GetInstructors extends AsyncTask<Void,Void,Void> {
 
 
         public GetInstructors() {
         }
 
         @Override
-        protected ArrayList<Instructors> doInBackground(ArrayList<Instructors>... params) {
+        protected Void doInBackground(Void... params) {
             try {
                 insts.add(new Instructors("Dodik Moshe", "Tel Aviv", R.drawable.christophe, " 24 year", "2 year", "24", "A"));
                 insts.add(new Instructors("Angelina Jolie", "Tel Aviv", R.drawable.angela, " 40 year", "12 year", " 84", "A B"));
@@ -297,27 +283,85 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                 insts.add(new Instructors("Yosy Ferdman", "Ashdod", R.drawable.saba, " 74 year", "35 year", " 98", "A B C D"));
                 insts.add(new Instructors("Rohel Bell", "Ashkelon", R.drawable.savta, " 64 year", "15 year", " 55", "A B"));
                 insts.add(new Instructors("David Zukerman", "Ashdod", R.drawable.saba2, " 88 year", "55 year", " 102", "A B C D"));
+
+
+                //complete the collection of groups from the array with the names of groups
+                for(String group: mGroupsArray) {
+                    map = new HashMap<>();
+                    map.put("groupName", group);
+                    groupDataList.add(map);
+                }
+                    // fill the list of attributes for each element
+                 for (String city : mCityArray) {
+                     map = new HashMap<>();
+                     map.put("name", city); // name of city
+                     сhildDataItemList.add(map);
+                    }
+                // add to the collection of collections
+                сhildDataList.add(сhildDataItemList);
+                //create a collection of items for the vechile
+                сhildDataItemList=new ArrayList<>();
+                for(String vichele: mTypeVehicleArray){
+                    map=new HashMap<>();
+                    map.put("name",vichele);
+                    сhildDataItemList.add(map);
+                }
+                сhildDataList.add(сhildDataItemList);
+                //create a collection of items for the Transmission
+                сhildDataItemList=new ArrayList<>();
+                for(String transmission: mTransmissionArray ){
+                    map=new HashMap<>();
+                    map.put("name",transmission);
+                    сhildDataItemList.add(map);
+                }
+                сhildDataList.add(сhildDataItemList);
+                //create a collection of items for the Experiences
+                сhildDataItemList=new ArrayList<>();
+                for(String exper: mExperienceArray  ){
+                    map=new HashMap<>();
+                    map.put("name",exper);
+                    сhildDataItemList.add(map);
+                }
+                сhildDataList.add(сhildDataItemList);
+                //create a collection of items for the Ratings
+                сhildDataItemList=new ArrayList<>();
+                for(String rating: mRatingArray  ){
+                    map=new HashMap<>();
+                    map.put("name",rating);
+                    сhildDataItemList.add(map);
+                }
+                сhildDataList.add(сhildDataItemList);
+                //create a collection of items for the Sex
+                сhildDataItemList=new ArrayList<>();
+                for(String sex:  mSexArray ){
+                    map=new HashMap<>();
+                    map.put("name",sex);
+                    сhildDataItemList.add(map);
+                }
+                сhildDataList.add(сhildDataItemList);
+                //create a collection of items for the Religion
+                сhildDataItemList=new ArrayList<>();
+                for(String relig:  mReligArray ){
+                    map=new HashMap<>();
+                    map.put("name",relig);
+                    сhildDataItemList.add(map);
+                }
+                сhildDataList.add(сhildDataItemList);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return insts;
+            return null;
         }
-
-
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-
-
-        @Override
-        protected void onPostExecute(ArrayList<Instructors> instructorses) {
-            super.onPostExecute(instructorses);
-insts=instructorses;
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            quantity.setText(String.valueOf(insts.size()) + " Instructors");
         }
     }
+
+
     }
+
 
