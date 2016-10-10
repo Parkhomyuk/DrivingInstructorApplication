@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,14 +35,14 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     Intent intent;
 
     //varible
-    private String[] mGroupsArray = new String[] { "City", "Type Vechile", "Tramsmission", "Experience","Rating" ,"Gender","Religious"};
-    private String[] mCityArray = new String[] { "Haifa", "Nazaret", "Tel Aviv", "Ierusalim","Rehovot" ,"Naarua","Netania"};
+    private String[] mGroupsArray = new String[] { "City", "Type Vechile", "Tramsmission", "Experience","Rating" ,"Gender"};
+   /* private String[] mCityArray = new String[] { "Haifa", "Nazaret", "Tel Aviv", "Ierusalim","Rehovot" ,"Naarua","Netania"};*/
     private String[] mTypeVehicleArray = new String[] { "A", "B","C","D"};
     private String[] mTransmissionArray = new String[] { "Automatic", "Manual" };
     private String[] mExperienceArray = new String[] { "1-4", "5-8", "9-12","13 >" };
     private String[] mRatingArray = new String[] { "0-19", "20-39", "40-59","60-99","100 >" };
     private String[] mSexArray = new String[] { "no matter", "Man", "Woman" };
-    private String[] mReligArray = new String[] { "no matter", "Yes", "No" };
+
     //varible
     TextView quantity;
     Map<String, String> map;
@@ -57,13 +58,13 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -76,7 +77,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
         //-------------------------adapter------------------
        //AsyncTask filldata
-        GetInstructors instructors=new GetInstructors();
+        GetInstructor instructors=new GetInstructor();
         instructors.execute();
         //
          quantity= (TextView)findViewById(R.id.quantity);
@@ -95,78 +96,11 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         //Filters in sliding left menu
         //------------ExpandbleListView City, Vechicle,Transsmission,Experrience,Rating--------------------
 
-      /*  final ArrayList<Map<String,String>> groupDataList=new ArrayList<>();*/
-        //complete the collection of groups from the array with the names of groups
-        /*for(String group: mGroupsArray){
-            map=new HashMap<>();
-            map.put("groupName",group);
-            groupDataList.add(map);
-        }*/
-        // a list of attribute groups to read
+             // a list of attribute groups to read
         String groupFrom[] = new String[] { "groupName" };
         // list ID view-elements, which will be placed groups attributes
         int groupTo[] = new int[] { android.R.id.text1 };
-        //Create a shared collection of items for collections
-       /* final ArrayList<ArrayList<Map<String, String>>> сhildDataList = new ArrayList<>();
-        // create a collection of items for the City group
-        ArrayList<Map<String, String>> сhildDataItemList = new ArrayList<>();*/
-        // fill the list of attributes for each element
-       /* for (String city : mCityArray) {
-            map = new HashMap<>();
-            map.put("name", city); // name of city
-            сhildDataItemList.add(map);
-        }
-        // add to the collection of collections
-        сhildDataList.add(сhildDataItemList);*/
 
-        /*//create a collection of items for the vechile
-        сhildDataItemList=new ArrayList<>();
-        for(String vichele: mTypeVehicleArray){
-            map=new HashMap<>();
-            map.put("name",vichele);
-            сhildDataItemList.add(map);
-        }
-        сhildDataList.add(сhildDataItemList);
-        //create a collection of items for the Transmission
-        сhildDataItemList=new ArrayList<>();
-        for(String transmission: mTransmissionArray ){
-            map=new HashMap<>();
-            map.put("name",transmission);
-            сhildDataItemList.add(map);
-        }
-        сhildDataList.add(сhildDataItemList);
-        //create a collection of items for the Experiences
-        сhildDataItemList=new ArrayList<>();
-        for(String exper: mExperienceArray  ){
-            map=new HashMap<>();
-            map.put("name",exper);
-            сhildDataItemList.add(map);
-        }
-        сhildDataList.add(сhildDataItemList);
-        //create a collection of items for the Ratings
-        сhildDataItemList=new ArrayList<>();
-        for(String rating: mRatingArray  ){
-            map=new HashMap<>();
-            map.put("name",rating);
-            сhildDataItemList.add(map);
-        }
-        сhildDataList.add(сhildDataItemList);
-        //create a collection of items for the Sex
-        сhildDataItemList=new ArrayList<>();
-        for(String sex:  mSexArray ){
-            map=new HashMap<>();
-            map.put("name",sex);
-            сhildDataItemList.add(map);
-        }
-        сhildDataList.add(сhildDataItemList);
-        //create a collection of items for the Religion
-        сhildDataItemList=new ArrayList<>();
-        for(String relig:  mReligArray ){
-            map=new HashMap<>();
-            map.put("name",relig);
-            сhildDataItemList.add(map);
-        }
-        сhildDataList.add(сhildDataItemList);*/
         // a list of attribute elements to read
         String childFrom[] = new String[] { "name" };
 
@@ -245,6 +179,11 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         String r=instructors.rating;
         String a=instructors.age;
         int image=instructors.avatar;
+        int price=instructors.pricePerHours;
+        String url=instructors.url;
+        String worDays=instructors.workingDays;
+        String worHours=instructors.workingHours;
+
 
         intent.putExtra("name",n);
         intent.putExtra("city",c);
@@ -252,39 +191,55 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         intent.putExtra("rating",r);
         intent.putExtra("age",a);
         intent.putExtra("avatar",image);
+        intent.putExtra("price",price);
+        intent.putExtra("url",url);
+        intent.putExtra("workDay",worDays);
+        intent.putExtra("workHour",worHours);
 
 
         startActivity(intent);
     }
-    class GetInstructors extends AsyncTask<Void,Void,Void> {
+    class GetInstructor extends AsyncTask<Void,Void,Void> {
 
 
-        public GetInstructors() {
+        public GetInstructor() {
         }
+
+
 
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                insts.add(new Instructors("Dodik Moshe", "Tel Aviv", R.drawable.christophe, " 24 year", "2 year", "24", "A"));
-                insts.add(new Instructors("Angelina Jolie", "Tel Aviv", R.drawable.angela, " 40 year", "12 year", " 84", "A B"));
-                insts.add(new Instructors("Tom Zat", "Netania", R.drawable.z, " 27 year", "4 year", " 42", "A B C"));
-                insts.add(new Instructors("Bruce Willis", "Netania", R.drawable.bruce, " 52 year", "15 year", " 26", "A B C D"));
-                insts.add(new Instructors("Zipora Zukerman", "Irusalim", R.drawable.savta, " 60 year", "27 year", " 17", "A B "));
-                insts.add(new Instructors("Tom Cruze", "Irusalim", R.drawable.tom, " 50 year", "17 year", " 85", "A B C D"));
-                insts.add(new Instructors("Bill Geist", "Tel Aviv", R.drawable.bill, " 62 year", "22 year", " 48", "A B C D"));
-                insts.add(new Instructors("Rostik Shahar", "Haifa", R.drawable.toto, " 27 year", "4 year", " 12", "B"));
-                insts.add(new Instructors("Barack Abama", "Haifa", R.drawable.barack, " 55 year", "20 year", " 44", "A B"));
-                insts.add(new Instructors("Jastin Timberlake", "Rehovot", R.drawable.tim, " 35 year", "11 year", " 48", "A B C"));
-                insts.add(new Instructors("Brad Pit", "Rehovot", R.drawable.brad, " 45 year", "18 year", " 68", "A B C D"));
-                insts.add(new Instructors("Haim Kaz", "Netania", R.drawable.buch, " 52 year", "25 year", " 55", "C D"));
-                insts.add(new Instructors("Rafik Golubian", "Tel Aviv", R.drawable.daty, " 34 year", "8 year", " 24", "A C D"));
-                insts.add(new Instructors("Lusy Zack", "Tel Aviv", R.drawable.lucy, " 24 year", "1 year", " 24", "A B"));
-                insts.add(new Instructors("Jack Nicolson", "Tel Aviv", R.drawable.nicola, " 62 year", "28 year", " 88", "A B C D"));
-                insts.add(new Instructors("Yosy Ferdman", "Ashdod", R.drawable.saba, " 74 year", "35 year", " 98", "A B C D"));
-                insts.add(new Instructors("Rohel Bell", "Ashkelon", R.drawable.savta, " 64 year", "15 year", " 55", "A B"));
-                insts.add(new Instructors("David Zukerman", "Ashdod", R.drawable.saba2, " 88 year", "55 year", " 102", "A B C D"));
+                insts.add(new Instructors("Dodik Moshe", "Tel Aviv", R.drawable.christophe, " 24 year", "2 year", "9", "A",120,"www.dodic.com","every day except Shabbat","8-20"));
+                insts.add(new Instructors("Angelina Jolie", "Tel Aviv", R.drawable.angela, " 40 year", "12 year", " 84", "A B",110,"www","every day except Shabbat","8-16"));
+                insts.add(new Instructors("Tom Zat", "Netania", R.drawable.z, " 27 year", "4 year", " 42", "A B C",110,"www.Tom.com","every day except Sunday","12-22"));
+                insts.add(new Instructors("Bruce Willis", "Netania", R.drawable.bruce, " 52 year", "15 year", " 26", "A B C D",110,"www","every day except Shabbat","12-18"));
+                insts.add(new Instructors("Zipora Zukerman", "Irusalim", R.drawable.savta, " 60 year", "27 year", " 17", "A B ",120,"www","every day except Shabbat","10-16"));
+                insts.add(new Instructors("Tom Cruze", "Irusalim", R.drawable.tom, " 50 year", "17 year", " 85", "A B C D",120,"www","every day except Shabbat","6-16"));
+                insts.add(new Instructors("Bill Geist", "Tel Aviv", R.drawable.bill, " 62 year", "22 year", " 48", "A B C D",110,"www","every day except Shabbat","8-16"));
+                insts.add(new Instructors("Rostik Shahar", "Haifa", R.drawable.toto, " 27 year", "4 year", " 12", "B",110,"www","every day except Shabbat","10-16"));
+                insts.add(new Instructors("Barack Abama", "Haifa", R.drawable.barack, " 55 year", "20 year", " 44", "A B",110,"www","every day except Shabbat","8-16"));
+                insts.add(new Instructors("Jastin Timberlaike", "Rehovot", R.drawable.tim, " 35 year", "11 year", " 48", "A B C",120,"www","every day except Shabbat","8-16"));
+                insts.add(new Instructors("Brad Pit", "Rehovot", R.drawable.brad, " 45 year", "18 year", " 68", "A B C D",130,"www","every day except Shabbat","8-16"));
+                insts.add(new Instructors("Haim Kaz", "Netania", R.drawable.buch, " 52 year", "25 year", " 55", "C D",110,"www","every day except Shabbat","8-16"));
+                insts.add(new Instructors("Rafik Golubian", "Tel Aviv", R.drawable.daty, " 34 year", "8 year", " 24", "A C D",120,"www","every day except Shabbat","8-16"));
+                insts.add(new Instructors("Lusy Zack", "Tel Aviv", R.drawable.lucy, " 24 year", "1 year", " 24", "A B",110,"www","every day except Shabbat","8-16"));
+                insts.add(new Instructors("Jack Nicolson", "Tel Aviv", R.drawable.nicola, " 62 year", "28 year", " 88", "A B C D",110,"www","every day except Shabbat","8-16"));
+                insts.add(new Instructors("Yosy Ferdman", "Ashdod", R.drawable.saba, " 74 year", "35 year", " 98", "A B C D",110,"www","every day except Shabbat","8-16"));
+                insts.add(new Instructors("Rohel Bell", "Ashkelon", R.drawable.savta, " 64 year", "15 year", " 55", "A B",110,"www","every day except Shabbat","8-16"));
+                insts.add(new Instructors("David Zukerman", "Ashdod", R.drawable.saba2, " 88 year", "55 year", " 102", "A B C D",110,"www","every day except Shabbat","8-16"));
 
-
+                ArrayList<String> mCityArray=new ArrayList<>();
+                for(int i=0;i<insts.size();i++) {
+                    if (insts.get(i) != null) {
+                        if (mCityArray.contains(insts.get(i).getCity())) i++;
+                        else
+                            mCityArray.add(insts.get(i).getCity());
+                    }
+                    else{
+                        i++;
+                    }
+                }
                 //complete the collection of groups from the array with the names of groups
                 for(String group: mGroupsArray) {
                     map = new HashMap<>();
@@ -339,14 +294,8 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                     сhildDataItemList.add(map);
                 }
                 сhildDataList.add(сhildDataItemList);
-                //create a collection of items for the Religion
-                сhildDataItemList=new ArrayList<>();
-                for(String relig:  mReligArray ){
-                    map=new HashMap<>();
-                    map.put("name",relig);
-                    сhildDataItemList.add(map);
-                }
-                сhildDataList.add(сhildDataItemList);
+
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -356,6 +305,8 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
         @Override
         protected void onPostExecute(Void aVoid) {
+
+
             super.onPostExecute(aVoid);
             quantity.setText(String.valueOf(insts.size()) + " Instructors");
         }

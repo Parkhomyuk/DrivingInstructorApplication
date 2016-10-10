@@ -40,7 +40,15 @@ public class TabInstructorActivity extends AppCompatActivity {
         String txtRat=getIntent().getStringExtra("rating");
         String txtAge=getIntent().getStringExtra("age");
 
+
+        String txtUrl=getIntent().getStringExtra("url");
+        String txtwd=getIntent().getStringExtra("workDay");
+        String txth=getIntent().getStringExtra("workHour");
+
         int image=getIntent().getIntExtra("avatar",0);
+        int price=getIntent().getIntExtra("price",0);
+        String priceText=price+"";
+
       TextView name=(TextView)findViewById(R.id.atName);
         name.setText(txtName);
       TextView city =(TextView)findViewById(R.id.atCity);
@@ -53,6 +61,15 @@ public class TabInstructorActivity extends AppCompatActivity {
         age.setText(txtAge);
         ImageView av=(ImageView) findViewById(R.id.im);
         av.setImageResource(image);
+     TextView txtPrice=(TextView)findViewById(R.id.atPrice);
+        txtPrice.setText(priceText);
+      TextView url=(TextView)findViewById(R.id.atURL);
+        url.setText(txtUrl);
+
+      TextView workDay=(TextView)findViewById(R.id.atDays);
+        workDay.setText(txtwd);
+      TextView workHour=(TextView)findViewById(R.id.atHours);
+        workHour.setText(txth);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         textActivityVich=txtName;
         textActivityMe="I think that the best thing to do is go to a rally school. You can waste a lot of time and money by driving cars around not knowing what you’re doing. The best way to start is to let someone who has the experience teach you how to do it. I’ve been to several rally schools, the main one being Team O’Neil in the States. That was the first place I ever went and I got a lot of knowledge out of them. Travis Pastrana had gone there and I thought it looked fun, so I wanted to try and drive a rally car. I absolutely loved it but also found that I had a pretty decent amount of talent inside the car and since then I’ve just been pushing to learn more and more. Well the main thing is that I absolutely doing all this stuff. So the idea of me being able to get in a car and be able to drive all these courses at a demo is just for fun. But at a competition, like X Games or WRC, the competitive side takes over and I just want to win.";

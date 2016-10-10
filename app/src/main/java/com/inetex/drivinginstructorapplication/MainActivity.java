@@ -13,17 +13,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ProgressBar;
+
 
 public class MainActivity extends Activity implements View.OnClickListener {
     private FloatingActionButton fab,fab1,fab2,fab3,fab4;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     private Boolean isFabOpen = false;
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
+       progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.fab1);
         fab2 = (FloatingActionButton) findViewById(R.id.fab2);
@@ -40,6 +44,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         fab2.setOnClickListener(this);
         fab3.setOnClickListener(this);
         fab4.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -55,8 +61,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Log.d("Fab", "Sign in");
                 break;
             case R.id.fab2:
-               /* Intent intent = new Intent(MainActivity.this,MapActivity.class);
-                startActivity(intent);*/
+               Intent intent = new Intent(MainActivity.this,MapActivity.class);
+                startActivity(intent);
                 Log.d("Fab", "Map");
                 break;
             case R.id.fab3:
@@ -65,11 +71,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.fab4:
+                progressBar.setVisibility(ProgressBar.VISIBLE);
                Intent intentAdapt = new Intent(MainActivity.this,InstructorAdapterActivity.class);
+
+                
                 startActivity(intentAdapt);
                 Log.d("AdapterInstructors", "Fab 4");
+
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
                 break;
         }
+
     }
     public void animateFAB(){
 

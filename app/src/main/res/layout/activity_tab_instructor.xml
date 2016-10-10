@@ -131,7 +131,92 @@
                     android:textColor="#060505"
                     android:layout_marginTop="8dp" />
                     </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Price per hour:  "
+                        android:textSize="16sp"
+                        android:textColor="#060505"
+                        android:layout_marginTop="8dp" />
+                    <TextView
+                        android:id="@+id/atPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="110"
+                        android:textSize="16sp"
+                        android:textColor="#060505"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Working days:  "
+                        android:textSize="16sp"
+                        android:textColor="#060505"
+                        android:layout_marginTop="8dp" />
+                    <TextView
+                        android:id="@+id/atDays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="all"
+                        android:textSize="16sp"
+                        android:textColor="#060505"
+                        android:layout_marginTop="8dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Working hours:  "
+                        android:textSize="16sp"
+                        android:textColor="#060505"
+                        android:layout_marginTop="8dp" />
+                    <TextView
+                        android:id="@+id/atHours"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10-12"
+                        android:textSize="16sp"
+                        android:textColor="#060505"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="URL :  "
+                        android:textSize="16sp"
+                        android:textColor="#060505"
+                        android:layout_marginTop="8dp" />
+                    <TextView
+                        android:id="@+id/atURL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="url"
+                        android:textSize="16sp"
+                        android:textColor="#060505"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
 
         <android.support.design.widget.TabLayout
@@ -153,5 +238,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@mipmap/ic_create_white_24dp" />
+        android:src="@mipmap/ic_email_white_24dp" />
 </android.support.design.widget.CoordinatorLayout>

@@ -7,5 +7,7 @@
     <string name="sort">sorting</string>
     <string name="filters">filters</string>
     <string name="TabInstructorActivity">Tab of Instructors</string>
+    <string name="city">city</string>
+    <string name="Map">map</string>
 
 </resources>
