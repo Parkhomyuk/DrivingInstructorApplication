@@ -39,17 +39,28 @@ public class InstructorDbHelper extends SQLiteOpenHelper {
                 + InstructorEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + InstructorEntry.COLUMN_INSTRUCTOR_NAME + " TEXT NOT NULL, "
                 + InstructorEntry.COLUMN_INSTRUCTOR_CITY + " TEXT NOT NULL, "
+                + InstructorEntry.COLUMN_INSTRUCTOR_AVATAR + " INTEGER , "
+                + InstructorEntry.COLUMN_INSTRUCTOR_AGE + " INTEGER , "
+                + InstructorEntry.COLUMN_INSTRUCTOR_EXPERIENCE + " TEXT NOT NULL , "
+                + InstructorEntry.COLUMN_INSTRUCTOR_RATING + " INTEGER , "
+                + InstructorEntry.COLUMN_INSTRUCTOR_VEHICLE + " TEXT NOT NULL, "
+                + InstructorEntry.COLUMN_INSTRUCTOR_PRICE + " INTEGER , "
+                + InstructorEntry.COLUMN_INSTRUCTOR_URL + " TEXT , "
+                + InstructorEntry.COLUMN_INSTRUCTOR_WORKDAY + " TEXT , "
+                + InstructorEntry.COLUMN_INSTRUCTOR_WORKHOURS + " TEXT , "
                 + InstructorEntry.COLUMN_INSTRUCTOR_EMAIL + " TEXT NOT NULL, "
                 + InstructorEntry.COLUMN_INSTRUCTOR_SCHOOL + " TEXT, "
                 + InstructorEntry.COLUMN_INSTRUCTOR_PHON + " TEXT NOT NULL, "
-                + InstructorEntry.COLUMN_INSTRUCTOR_AVATAR + " INTEGER , "
-                + InstructorEntry.COLUMN_INSTRUCTOR_VEHICLE + " TEXT NOT NULL, "
                 + InstructorEntry.COLUMN_INSTRUCTOR_PASSWORD + " TEXT NOT NULL); ";
 
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_INSTRUCTOR_TABLE);
     }
+
+
+
+
 
     /**
      * This is called when the database needs to be upgraded.

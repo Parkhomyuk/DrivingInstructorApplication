@@ -37,6 +37,13 @@ public final class InstructorContract {
         public final static String COLUMN_INSTRUCTOR_PASSWORD="password";
         public final static String COLUMN_INSTRUCTOR_PHON="phon";
         public final static String COLUMN_INSTRUCTOR_AVATAR="avatar";
+        public final static String COLUMN_INSTRUCTOR_AGE="age";
+        public final static String COLUMN_INSTRUCTOR_EXPERIENCE="experience";
+        public final static String COLUMN_INSTRUCTOR_RATING="rating";
+        public final static String COLUMN_INSTRUCTOR_PRICE="price";
+        public final static String COLUMN_INSTRUCTOR_URL="url";
+        public final static String COLUMN_INSTRUCTOR_WORKDAY="workday";
+        public final static String COLUMN_INSTRUCTOR_WORKHOURS="workhours";
 
         /**
          * Possible values for the gender of the Instructor.

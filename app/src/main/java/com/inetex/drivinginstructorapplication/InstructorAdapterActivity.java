@@ -1,7 +1,9 @@
 package com.inetex.drivinginstructorapplication;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -23,6 +25,9 @@ import android.widget.ProgressBar;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.inetex.drivinginstructorapplication.data.InstructorContract;
+import com.inetex.drivinginstructorapplication.data.InstructorDbHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,13 +56,15 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     final ArrayList<ArrayList<Map<String, String>>> сhildDataList = new ArrayList<>();
     // create a collection of items for the City group
     ArrayList<Map<String, String>> сhildDataItemList = new ArrayList<>();
+    InstructorDbHelper mdHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instructor_adapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        mdHelper=new InstructorDbHelper(this);
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,6 +216,27 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
         @Override
         protected Void doInBackground(Void... params) {
+           //connection to db
+
+            SQLiteDatabase db= mdHelper.getWritableDatabase();
+            ContentValues values= new ContentValues();
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_NAME, "Dodik Moshe");
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AVATAR,  R.drawable.christophe);
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AGE,  "24 year");
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_EXPERIENCE,  "24 year");
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_RATING,  9);
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_VEHICLE, "A");
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PRICE, 120);
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_URL, "www.dodic.com");
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_WORKDAY, "every day except Shabbat");
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_WORKHOURS, "8-20");
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_EMAIL, "dodic@gmai.com");
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_CITY, "Tel Aviv");
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PHON, "050 266 66 66");
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_SCHOOL, "Driving School");
+            values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PASSWORD, "doddic");
+            db.insert(InstructorContract.InstructorEntry.TABLE_NAME,null,values);
+            //connection to db
             try {
                 insts.add(new Instructors("Dodik Moshe", "Tel Aviv", R.drawable.christophe, " 24 year", "2 year", "9", "A",120,"www.dodic.com","every day except Shabbat","8-20"));
                 insts.add(new Instructors("Angelina Jolie", "Tel Aviv", R.drawable.angela, " 40 year", "12 year", " 84", "A B",110,"www","every day except Shabbat","8-16"));

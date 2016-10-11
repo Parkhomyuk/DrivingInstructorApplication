@@ -11,14 +11,20 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import android.location.LocationListener;
+
+import com.google.android.gms.common.server.converter.StringToIntConverter;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,24 +39,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 public class MapActivity extends Activity implements OnMapReadyCallback, LocationListener {
     GoogleMap googleMap;
     boolean mapReady = false;
-
+    Double latitude;
+    Double longtitude;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     protected LocationRequest mLocationRequest;
     Marker marker;
     String cityName;
-    Double latitude;
-    Double longtitude;
+
     LatLng pos;
     ArrayList<Instructors> insts = new ArrayList<Instructors>();
-    ArrayList<String> instructorCity=new ArrayList<>();
-    HashMap<String,Integer> instructorQuantity=new HashMap<>();
+    ArrayList<String> instructorCity = new ArrayList<>();
+    HashMap<String, Integer> instructorQuantity = new HashMap<>();
+    Marker instructorMarker;
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +75,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
         instructorCity.add("Tel Aviv");
         instructorCity.add("Haifa");
         //AsyncTask filldata
-        GetInstructorMap instructorsMap=new GetInstructorMap();
+        GetInstructorMap instructorsMap = new GetInstructorMap();
         instructorsMap.execute();
         //
         final EditText textName = (EditText) findViewById(R.id.findCity);
@@ -89,10 +102,10 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
 
 
                                               pos = new LatLng(latitude, longtitude);
-                                              googleMap.addMarker(new MarkerOptions().icon(
+                                             /* googleMap.addMarker(new MarkerOptions().icon(
                                                       BitmapDescriptorFactory
                                                               .defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                                                      .position(pos));
+                                                      .position(pos));*/
 
                                               CameraPosition target = CameraPosition.builder().target(pos).zoom(8).build();
                                               googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(target), 3000, null);
@@ -104,6 +117,9 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
         );
 
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -159,15 +175,15 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.streetview))
                 );
 
-                marker.showInfoWindow();
+
 
             }
+            marker.showInfoWindow();
         }
         //-----------add markers------//
-        for(int i=0;i<instructorCity.size();i++) {
-            String addressStr = instructorCity.get(i);
+        for (Map.Entry<String, Integer> entry : instructorQuantity.entrySet()) {
+            String addressStr = entry.getKey();
             Geocoder geoCoder = new Geocoder(MapActivity.this, Locale.getDefault());
-
             try {
                 List<Address> addresses =
                         geoCoder.getFromLocationName(addressStr, 1);
@@ -179,17 +195,17 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
             } catch (IOException e) { // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
-
             LatLng positionInstructors = new LatLng(latitude, longtitude);
-            Marker instructorMarker=googleMap.addMarker(new MarkerOptions()
-                    .title("Instructors")
-                    .snippet(instructorQuantity.get(addressStr)+"")
+            instructorMarker = googleMap.addMarker(new MarkerOptions()
+                    .title(addressStr)
+                    .snippet("Instructors " + entry.getValue())
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.unnamed))
                     .position(positionInstructors));
             instructorMarker.showInfoWindow();
         }
+
         //-----------add markers------//
+
     }
 
     public static boolean isConnected(Context context) {
@@ -217,7 +233,49 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
 
     }
 
-    class GetInstructorMap extends AsyncTask<Void, Void,Void> {
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Map Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.inetex.drivinginstructorapplication/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Map Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.inetex.drivinginstructorapplication/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
+
+
+
+    class GetInstructorMap extends AsyncTask<Void, Void, Void> {
 
 
         public GetInstructorMap() {
@@ -246,17 +304,12 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
                 insts.add(new Instructors("Rohel Bell", "Ashkelon", R.drawable.savta, " 64 year", "15 year", " 55", "A B", 110, "www", "every day except Shabbat", "8-16"));
                 insts.add(new Instructors("David Zukerman", "Ashdod", R.drawable.saba2, " 88 year", "55 year", " 102", "A B C D", 110, "www", "every day except Shabbat", "8-16"));
 
-                for(int i=0;i<insts.size();i++) {
-
-                    instructorCity.add(insts.get(i).getCity() + ",IL");
-                }
-                for(int i=0;i<insts.size();i++) {
-                    String quant=insts.get(i).getCity();
-                    if(instructorQuantity.containsKey(quant)){
-                        int value=instructorQuantity.get(quant);
-                        instructorQuantity.put(quant,value+1);
-                    }
-                    else instructorQuantity.put(quant,1);
+                for (int i = 0; i < insts.size(); i++) {
+                    String quant = insts.get(i).getCity();
+                    if (instructorQuantity.containsKey(quant)) {
+                        int value = instructorQuantity.get(quant).intValue();
+                        instructorQuantity.put(quant, value + 1);
+                    } else instructorQuantity.put(quant, 1);
                 }
 
 
@@ -267,5 +320,10 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
         }
 
 
-            }
+    }
+
+
+
+
+
 }
