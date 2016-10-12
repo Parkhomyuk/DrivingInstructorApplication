@@ -13,8 +13,10 @@ public class Instructors {
     String url;
     String workingDays;
     String workingHours;
+    String phon;
+    String school;
 
-    public Instructors(String name, String city, int avatar, String age, String experience, String rating, String typeVehicle, int pricePerHours, String url, String workingDays, String workingHours) {
+    public Instructors(String name, String city, int avatar, String age, String experience, String rating, String typeVehicle, int pricePerHours, String url, String workingDays, String workingHours, String phon, String school) {
         this.name = name;
         this.city = city;
         this.avatar = avatar;
@@ -26,9 +28,27 @@ public class Instructors {
         this.url = url;
         this.workingDays = workingDays;
         this.workingHours = workingHours;
+        this.phon = phon;
+        this.school = school;
     }
 
     public Instructors() {
+    }
+
+    public String getPhon() {
+        return phon;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setPhon(String phon) {
+        this.phon = phon;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
     }
 
     public String getName() {
@@ -119,6 +139,7 @@ public class Instructors {
         this.workingHours = workingHours;
     }
 
+
     @Override
     public String toString() {
         return "Instructors{" +
@@ -133,6 +154,8 @@ public class Instructors {
                 ", url='" + url + '\'' +
                 ", workingDays='" + workingDays + '\'' +
                 ", workingHours='" + workingHours + '\'' +
+                ", phon='" + phon + '\'' +
+                ", school='" + school + '\'' +
                 '}';
     }
 }

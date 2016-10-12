@@ -285,7 +285,9 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                insts.add(new Instructors("Dodik Moshe", "Tel Aviv", R.drawable.christophe, " 24 year", "2 year", "9", "A", 120, "www.dodic.com", "every day except Shabbat", "8-20"));
+                InstructorAdapterActivity ins= new InstructorAdapterActivity();
+                insts.addAll(ins.getInsts());
+                /*insts.add(new Instructors("Dodik Moshe", "Tel Aviv", R.drawable.christophe, " 24 year", "2 year", "9", "A", 120, "www.dodic.com", "every day except Shabbat", "8-20"));
                 insts.add(new Instructors("Angelina Jolie", "Tel Aviv", R.drawable.angela, " 40 year", "12 year", " 84", "A B", 110, "www", "every day except Shabbat", "8-16"));
                 insts.add(new Instructors("Tom Zat", "Netania", R.drawable.z, " 27 year", "4 year", " 42", "A B C", 110, "www.Tom.com", "every day except Sunday", "12-22"));
                 insts.add(new Instructors("Bruce Willis", "Netania", R.drawable.bruce, " 52 year", "15 year", " 26", "A B C D", 110, "www", "every day except Shabbat", "12-18"));
@@ -302,9 +304,9 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
                 insts.add(new Instructors("Jack Nicolson", "Tel Aviv", R.drawable.nicola, " 62 year", "28 year", " 88", "A B C D", 110, "www", "every day except Shabbat", "8-16"));
                 insts.add(new Instructors("Yosy Ferdman", "Ashdod", R.drawable.saba, " 74 year", "35 year", " 98", "A B C D", 110, "www", "every day except Shabbat", "8-16"));
                 insts.add(new Instructors("Rohel Bell", "Ashkelon", R.drawable.savta, " 64 year", "15 year", " 55", "A B", 110, "www", "every day except Shabbat", "8-16"));
-                insts.add(new Instructors("David Zukerman", "Ashdod", R.drawable.saba2, " 88 year", "55 year", " 102", "A B C D", 110, "www", "every day except Shabbat", "8-16"));
+                insts.add(new Instructors("David Zukerman", "Ashdod", R.drawable.saba2, " 88 year", "55 year", " 102", "A B C D", 110, "www", "every day except Shabbat", "8-16"));*/
 
-                for (int i = 0; i < insts.size(); i++) {
+                for (int i = 0; i <  insts.size(); i++) {
                     String quant = insts.get(i).getCity();
                     if (instructorQuantity.containsKey(quant)) {
                         int value = instructorQuantity.get(quant).intValue();

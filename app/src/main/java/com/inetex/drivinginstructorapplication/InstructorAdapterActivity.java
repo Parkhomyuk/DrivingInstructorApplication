@@ -3,6 +3,7 @@ package com.inetex.drivinginstructorapplication;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -207,8 +208,9 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         startActivity(intent);
     }
     class GetInstructor extends AsyncTask<Void,Void,Void> {
-
-
+        SQLiteDatabase db= mdHelper.getWritableDatabase();
+        ContentValues values= new ContentValues();
+        ContentValues values2= new ContentValues();
         public GetInstructor() {
         }
 
@@ -218,8 +220,8 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         protected Void doInBackground(Void... params) {
            //connection to db
 
-            SQLiteDatabase db= mdHelper.getWritableDatabase();
-            ContentValues values= new ContentValues();
+
+
             values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_NAME, "Dodik Moshe");
             values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AVATAR,  R.drawable.christophe);
             values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AGE,  "24 year");
@@ -235,10 +237,147 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
             values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PHON, "050 266 66 66");
             values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_SCHOOL, "Driving School");
             values.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PASSWORD, "doddic");
+
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_NAME, "Angelina Jolie");
+
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AVATAR, R.drawable.angela);
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AGE,  "40 year");
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_EXPERIENCE,  "12 year");
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_RATING,  6);
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_VEHICLE, "A B");
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PRICE, 110);
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_URL, "www");
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_WORKDAY, "every day except Shabbat");
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_WORKHOURS, "8-16");
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_EMAIL, "angela@gmai.com");
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_CITY, "Tel Aviv");
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PHON, "050 267 67 67");
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_SCHOOL, "Driving School Pit");
+            values2.put(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PASSWORD, "angela");
+
             db.insert(InstructorContract.InstructorEntry.TABLE_NAME,null,values);
+            db.insert(InstructorContract.InstructorEntry.TABLE_NAME,null,values2);
+
+            String[] projection = {
+
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_NAME,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_CITY,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AVATAR,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AGE,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_EXPERIENCE,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_RATING,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_VEHICLE,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PRICE,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_URL,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_WORKDAY,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_WORKHOURS,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PHON,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_SCHOOL
+
+            };
+            String[] projection2 = {
+
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_NAME,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_CITY,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AVATAR,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AGE,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_EXPERIENCE,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_RATING,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_VEHICLE,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PRICE,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_URL,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_WORKDAY,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_WORKHOURS,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PHON,
+                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_SCHOOL
+
+            };
+            // Perform a query on the Instructors table
+            Cursor cursor = db.query(
+                    InstructorContract.InstructorEntry.TABLE_NAME,   // The table to query
+                    projection,            // The columns to return
+                    null,                  // The columns for the WHERE clause
+                    null,                  // The values for the WHERE clause
+                    null,                  // Don't group the rows
+                    null,                  // Don't filter by row groups
+                    null);                   // The sort order
+            // Perform a query on the Instructors table
+            Cursor cursor2 = db.query(
+                    InstructorContract.InstructorEntry.TABLE_NAME,   // The table to query
+                    projection2,            // The columns to return
+                    null,                  // The columns for the WHERE clause
+                    null,                  // The values for the WHERE clause
+                    null,                  // Don't group the rows
+                    null,                  // Don't filter by row groups
+                    null);
+            int nameColumnName=cursor.getColumnIndex(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_NAME);
+            int cityColumnName=cursor.getColumnIndex(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_CITY);
+            int avatarColumnName=cursor.getColumnIndex(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AVATAR);
+            int ageColumnName=cursor.getColumnIndex(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AGE);
+            int expeColumnName=cursor.getColumnIndex(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_EXPERIENCE);
+            int ratColumnName=cursor.getColumnIndex(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_RATING);
+            int typeVeuicleColumnName=cursor.getColumnIndex(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_VEHICLE);
+            int priceColumnName=cursor.getColumnIndex(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PRICE);
+            int urlColumnName=cursor.getColumnIndex(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_URL);
+            int workdayColumnName=cursor.getColumnIndex(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_WORKDAY);
+            int workhourColumnName=cursor.getColumnIndex(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_WORKHOURS);
+            int phonColumnName=cursor.getColumnIndex(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PHON);
+            int schoolColumnName=cursor.getColumnIndex(InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_SCHOOL);
+            Instructors instructors= new Instructors();
+            Instructors instructors2= new Instructors();
+            try{
+                while (cursor.moveToNext()) {
+                    instructors.setName(cursor.getString(nameColumnName));
+                    instructors.setCity(cursor.getString(cityColumnName));
+                    instructors.setAvatar(Integer.parseInt(cursor.getString(avatarColumnName)));
+                    instructors.setAge(cursor.getString(ageColumnName));
+                    instructors.setExperience(cursor.getString(expeColumnName));
+                    instructors.setRating(cursor.getString(ratColumnName));
+                    instructors.setTypeVehicle(cursor.getString(typeVeuicleColumnName));
+                    instructors.setPricePerHours(Integer.parseInt(cursor.getString(priceColumnName)));
+                    instructors.setUrl(cursor.getString(urlColumnName));
+                    instructors.setWorkingDays(cursor.getString(workdayColumnName));
+                    instructors.setWorkingHours(cursor.getString(workhourColumnName));
+                    instructors.setPhon(cursor.getString(phonColumnName));
+                    instructors.setSchool(cursor.getString(schoolColumnName));
+
+
+                }
+
+            }
+            catch (Exception e){}
+            finally {
+                cursor.close();
+
+            }
+            try{
+
+                while (cursor2.moveToNext()) {
+                    instructors2.setName(cursor2.getString(nameColumnName));
+                    instructors2.setCity(cursor2.getString(cityColumnName));
+                    instructors2.setAvatar(Integer.parseInt(cursor2.getString(avatarColumnName)));
+                    instructors2.setAge(cursor2.getString(ageColumnName));
+                    instructors2.setExperience(cursor2.getString(expeColumnName));
+                    instructors2.setRating(cursor2.getString(ratColumnName));
+                    instructors2.setTypeVehicle(cursor2.getString(typeVeuicleColumnName));
+                    instructors2.setPricePerHours(Integer.parseInt(cursor2.getString(priceColumnName)));
+                    instructors2.setUrl(cursor2.getString(urlColumnName));
+                    instructors2.setWorkingDays(cursor2.getString(workdayColumnName));
+                    instructors2.setWorkingHours(cursor2.getString(workhourColumnName));
+                    instructors2.setPhon(cursor2.getString(phonColumnName));
+                    instructors2.setSchool(cursor2.getString(schoolColumnName));
+                }
+            }
+            catch (Exception e){}
+            finally {
+
+                cursor2.close();
+            }
             //connection to db
             try {
-                insts.add(new Instructors("Dodik Moshe", "Tel Aviv", R.drawable.christophe, " 24 year", "2 year", "9", "A",120,"www.dodic.com","every day except Shabbat","8-20"));
+                insts.add(instructors);
+                insts.add(instructors2);
+               /* insts.add(new Instructors("Dodik Moshe", "Tel Aviv", R.drawable.christophe, " 24 year", "2 year", "9", "A",120,"www.dodic.com","every day except Shabbat","8-20"));
                 insts.add(new Instructors("Angelina Jolie", "Tel Aviv", R.drawable.angela, " 40 year", "12 year", " 84", "A B",110,"www","every day except Shabbat","8-16"));
                 insts.add(new Instructors("Tom Zat", "Netania", R.drawable.z, " 27 year", "4 year", " 42", "A B C",110,"www.Tom.com","every day except Sunday","12-22"));
                 insts.add(new Instructors("Bruce Willis", "Netania", R.drawable.bruce, " 52 year", "15 year", " 26", "A B C D",110,"www","every day except Shabbat","12-18"));
@@ -255,7 +394,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                 insts.add(new Instructors("Jack Nicolson", "Tel Aviv", R.drawable.nicola, " 62 year", "28 year", " 88", "A B C D",110,"www","every day except Shabbat","8-16"));
                 insts.add(new Instructors("Yosy Ferdman", "Ashdod", R.drawable.saba, " 74 year", "35 year", " 98", "A B C D",110,"www","every day except Shabbat","8-16"));
                 insts.add(new Instructors("Rohel Bell", "Ashkelon", R.drawable.savta, " 64 year", "15 year", " 55", "A B",110,"www","every day except Shabbat","8-16"));
-                insts.add(new Instructors("David Zukerman", "Ashdod", R.drawable.saba2, " 88 year", "55 year", " 102", "A B C D",110,"www","every day except Shabbat","8-16"));
+                insts.add(new Instructors("David Zukerman", "Ashdod", R.drawable.saba2, " 88 year", "55 year", " 102", "A B C D",110,"www","every day except Shabbat","8-16"));*/
 
                 ArrayList<String> mCityArray=new ArrayList<>();
                 for(int i=0;i<insts.size();i++) {
@@ -340,7 +479,9 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         }
     }
 
-
+    public ArrayList<Instructors> getInsts() {
+        return insts;
     }
+}
 
 
