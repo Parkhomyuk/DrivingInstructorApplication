@@ -1,14 +1,25 @@
 package com.inetex.drivinginstructorapplication;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
-
+import android.graphics.drawable.Drawable;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.squareup.picasso.Picasso;
+import java.io.InputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 
@@ -16,7 +27,8 @@ public class BoxAdapter extends BaseAdapter  {
     Context ctx;
     LayoutInflater lInflater;
     ArrayList<Instructors> objects;
-
+    ImageView image;
+    Instructors instructors;
     BoxAdapter(Context context, ArrayList<Instructors> instructors) {
         ctx = context;
         objects = instructors;
@@ -51,18 +63,28 @@ public class BoxAdapter extends BaseAdapter  {
             view = lInflater.inflate(R.layout.item_instructors, parent, false);
         }
 
-        Instructors instructors = getInstructor(position);
+         instructors = getInstructor(position);
 
         // заполняем View в пункте списка данными
 
         ((TextView) view.findViewById(R.id.tvName)).setText(instructors.name);
         ((TextView) view.findViewById(R.id.tvCity)).setText(instructors.city);
         ((TextView) view.findViewById(R.id.tvExperience)).setText(instructors.experience);
-        ((TextView) view.findViewById(R.id.tvRating)).setText(instructors.rating);
+        ((TextView) view.findViewById(R.id.tvRating)).setText(instructors.rating+"");
         ((TextView) view.findViewById(R.id.tvTypeVeh)).setText(instructors.typeVehicle);
 
-        ((ImageView) view.findViewById(R.id.ivImage)).setImageResource(instructors.avatar);
+        /*((ImageView) view.findViewById(R.id.ivImage)).setImageResource(instructors.avatar);*/
+        image=(ImageView) view.findViewById(R.id.ivImage);
+        loadImageFromAsset(instructors.avatar);
 
+       /* File imagePath = new File("/assets/angela.jpg"  );
+
+        Picasso.with(ctx)
+                *//*.load("http://static.parset.com/Files/Galleries/8/8aHDJQok.jpg")*//*
+                .load(imagePath)
+                .placeholder(R.drawable.ic_account_circle_black_24dp)
+                .error(R.drawable.ic_cancel_black_24dp)
+                .into(image);*/
 
        /* CheckBox cbBuy = (CheckBox) view.findViewById(R.id.cbBox);
         // присваиваем чекбоксу обработчик
@@ -103,5 +125,20 @@ public class BoxAdapter extends BaseAdapter  {
         }
     };*/
 
+     public void loadImageFromAsset(String str) {
+         try {
+             // получаем входной поток
+             InputStream ims = ctx.getAssets().open(str);
+             // загружаем как Drawable
+             Drawable d = Drawable.createFromStream(ims, null);
+             // выводим картинку в ImageView
+             image.setImageDrawable(d);
+         } catch (IOException ex) {
+             return;
+         }
+     }
+    }
 
-}
+
+
+

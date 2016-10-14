@@ -19,12 +19,13 @@ android {
         }
     }
 
-        dexOptions {
-            incremental = true;
-            preDexLibraries = false
-            javaMaxHeapSize "2g"
-        }
+    dexOptions {
+        incremental = true;
+        preDexLibraries = false
+        javaMaxHeapSize "2g"
+    }
 
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'app'] } }
 }
 
 dependencies {
@@ -40,6 +41,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:9.4.0'
     compile 'com.google.android.gms:play-services-gcm:9.4.0'
     compile 'com.android.support:multidex:1.0.0'
-
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.android.gms:play-services:7.5.0'
+    compile 'com.facebook.fresco:fresco:0.6.1'
 }

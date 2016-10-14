@@ -4,6 +4,7 @@ package com.inetex.drivinginstructorapplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 
@@ -34,6 +35,9 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.*;
+import com.inetex.drivinginstructorapplication.data.GetInstructors;
+import com.inetex.drivinginstructorapplication.data.InstructorDbHelper;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +56,8 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
     protected LocationRequest mLocationRequest;
     Marker marker;
     String cityName;
-
+    Cursor cursor;
+    InstructorDbHelper mdHelper;
     LatLng pos;
     ArrayList<Instructors> insts = new ArrayList<Instructors>();
     ArrayList<String> instructorCity = new ArrayList<>();
@@ -74,6 +79,8 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
         mapFragment.getMapAsync(this);
         instructorCity.add("Tel Aviv");
         instructorCity.add("Haifa");
+        GetInstructors instructorsDB= new GetInstructors(this,cursor,mdHelper,insts);
+        instructorsDB.execute();
         //AsyncTask filldata
         GetInstructorMap instructorsMap = new GetInstructorMap();
         instructorsMap.execute();
@@ -120,6 +127,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
 
     @Override
@@ -180,7 +188,9 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
             }
             marker.showInfoWindow();
         }
+
         //-----------add markers------//
+
         for (Map.Entry<String, Integer> entry : instructorQuantity.entrySet()) {
             String addressStr = entry.getKey();
             Geocoder geoCoder = new Geocoder(MapActivity.this, Locale.getDefault());
@@ -285,26 +295,6 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                InstructorAdapterActivity ins= new InstructorAdapterActivity();
-                insts.addAll(ins.getInsts());
-                /*insts.add(new Instructors("Dodik Moshe", "Tel Aviv", R.drawable.christophe, " 24 year", "2 year", "9", "A", 120, "www.dodic.com", "every day except Shabbat", "8-20"));
-                insts.add(new Instructors("Angelina Jolie", "Tel Aviv", R.drawable.angela, " 40 year", "12 year", " 84", "A B", 110, "www", "every day except Shabbat", "8-16"));
-                insts.add(new Instructors("Tom Zat", "Netania", R.drawable.z, " 27 year", "4 year", " 42", "A B C", 110, "www.Tom.com", "every day except Sunday", "12-22"));
-                insts.add(new Instructors("Bruce Willis", "Netania", R.drawable.bruce, " 52 year", "15 year", " 26", "A B C D", 110, "www", "every day except Shabbat", "12-18"));
-                insts.add(new Instructors("Zipora Zukerman", "Irusalim", R.drawable.savta, " 60 year", "27 year", " 17", "A B ", 120, "www", "every day except Shabbat", "10-16"));
-                insts.add(new Instructors("Tom Cruze", "Irusalim", R.drawable.tom, " 50 year", "17 year", " 85", "A B C D", 120, "www", "every day except Shabbat", "6-16"));
-                insts.add(new Instructors("Bill Geist", "Tel Aviv", R.drawable.bill, " 62 year", "22 year", " 48", "A B C D", 110, "www", "every day except Shabbat", "8-16"));
-                insts.add(new Instructors("Rostik Shahar", "Haifa", R.drawable.toto, " 27 year", "4 year", " 12", "B", 110, "www", "every day except Shabbat", "10-16"));
-                insts.add(new Instructors("Barack Abama", "Haifa", R.drawable.barack, " 55 year", "20 year", " 44", "A B", 110, "www", "every day except Shabbat", "8-16"));
-                insts.add(new Instructors("Jastin Timberlaike", "Rehovot", R.drawable.tim, " 35 year", "11 year", " 48", "A B C", 120, "www", "every day except Shabbat", "8-16"));
-                insts.add(new Instructors("Brad Pit", "Rehovot", R.drawable.brad, " 45 year", "18 year", " 68", "A B C D", 130, "www", "every day except Shabbat", "8-16"));
-                insts.add(new Instructors("Haim Kaz", "Netania", R.drawable.buch, " 52 year", "25 year", " 55", "C D", 110, "www", "every day except Shabbat", "8-16"));
-                insts.add(new Instructors("Rafik Golubian", "Tel Aviv", R.drawable.daty, " 34 year", "8 year", " 24", "A C D", 120, "www", "every day except Shabbat", "8-16"));
-                insts.add(new Instructors("Lusy Zack", "Tel Aviv", R.drawable.lucy, " 24 year", "1 year", " 24", "A B", 110, "www", "every day except Shabbat", "8-16"));
-                insts.add(new Instructors("Jack Nicolson", "Tel Aviv", R.drawable.nicola, " 62 year", "28 year", " 88", "A B C D", 110, "www", "every day except Shabbat", "8-16"));
-                insts.add(new Instructors("Yosy Ferdman", "Ashdod", R.drawable.saba, " 74 year", "35 year", " 98", "A B C D", 110, "www", "every day except Shabbat", "8-16"));
-                insts.add(new Instructors("Rohel Bell", "Ashkelon", R.drawable.savta, " 64 year", "15 year", " 55", "A B", 110, "www", "every day except Shabbat", "8-16"));
-                insts.add(new Instructors("David Zukerman", "Ashdod", R.drawable.saba2, " 88 year", "55 year", " 102", "A B C D", 110, "www", "every day except Shabbat", "8-16"));*/
 
                 for (int i = 0; i <  insts.size(); i++) {
                     String quant = insts.get(i).getCity();

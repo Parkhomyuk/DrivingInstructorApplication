@@ -4,10 +4,10 @@ package com.inetex.drivinginstructorapplication;
 public class Instructors {
     String name;
     String city;
-    int avatar;
-    String age;
+    String avatar;
+    int age;
     String experience;
-    String rating;
+    int rating;
     String typeVehicle;
     int pricePerHours;
     String url;
@@ -15,8 +15,10 @@ public class Instructors {
     String workingHours;
     String phon;
     String school;
+    String email;
+    String password;
 
-    public Instructors(String name, String city, int avatar, String age, String experience, String rating, String typeVehicle, int pricePerHours, String url, String workingDays, String workingHours, String phon, String school) {
+    public Instructors(String name, String city, String avatar, int age, String experience, int rating, String typeVehicle, int pricePerHours, String url, String workingDays, String workingHours, String phon, String school, String email, String password) {
         this.name = name;
         this.city = city;
         this.avatar = avatar;
@@ -30,6 +32,8 @@ public class Instructors {
         this.workingHours = workingHours;
         this.phon = phon;
         this.school = school;
+        this.email = email;
+        this.password = password;
     }
 
     public Instructors() {
@@ -59,29 +63,31 @@ public class Instructors {
         return city;
     }
 
-    public int getAvatar() {
-        return avatar;
+
+
+    public int getAge() {
+        return age;
     }
 
-    public String getAge() {
-        return age;
+    public int getRating() {
+        return rating;
+    }
+
+    public int getPricePerHours() {
+        return pricePerHours;
     }
 
     public String getExperience() {
         return experience;
     }
 
-    public String getRating() {
-        return rating;
-    }
+
 
     public String getTypeVehicle() {
         return typeVehicle;
     }
 
-    public int getPricePerHours() {
-        return pricePerHours;
-    }
+
 
     public String getUrl() {
         return url;
@@ -103,28 +109,19 @@ public class Instructors {
         this.city = city;
     }
 
-    public void setAvatar(int avatar) {
-        this.avatar = avatar;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
-    }
 
     public void setExperience(String experience) {
         this.experience = experience;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
+
 
     public void setTypeVehicle(String typeVehicle) {
         this.typeVehicle = typeVehicle;
     }
 
-    public void setPricePerHours(int pricePerHours) {
-        this.pricePerHours = pricePerHours;
+    public String getAvatar() {
+        return avatar;
     }
 
     public void setUrl(String url) {
@@ -139,24 +136,39 @@ public class Instructors {
         this.workingHours = workingHours;
     }
 
-
-    @Override
-    public String toString() {
-        return "Instructors{" +
-                "name='" + name + '\'' +
-                ", city='" + city + '\'' +
-                ", avatar=" + avatar +
-                ", age='" + age + '\'' +
-                ", experience='" + experience + '\'' +
-                ", rating='" + rating + '\'' +
-                ", typeVehicle='" + typeVehicle + '\'' +
-                ", pricePerHours=" + pricePerHours +
-                ", url='" + url + '\'' +
-                ", workingDays='" + workingDays + '\'' +
-                ", workingHours='" + workingHours + '\'' +
-                ", phon='" + phon + '\'' +
-                ", school='" + school + '\'' +
-                '}';
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public void setPricePerHours(int pricePerHours) {
+        this.pricePerHours = pricePerHours;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+
 }
 

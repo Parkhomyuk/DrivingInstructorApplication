@@ -17,7 +17,7 @@ public final class InstructorContract {
      */
     public static final class InstructorEntry implements BaseColumns{
 
-        public final static String TABLE_NAME="Instructors";
+        public final static String TABLE_NAME="Instructor";
 
         /**
          * Unique ID number for the Instructor (only for use in the database table).
