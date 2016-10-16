@@ -15,7 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.graphics.drawable.Drawable;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +34,7 @@ public class TabInstructorActivity extends AppCompatActivity {
     private String textActivityVich;
     private String textActivityMe;
     private String textActivityRev;
-
+    ImageView image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +50,7 @@ public class TabInstructorActivity extends AppCompatActivity {
         String txtwd=getIntent().getStringExtra("workDay");
         String txth=getIntent().getStringExtra("workHour");
 
-        int image=getIntent().getIntExtra("avatar",0);
+        String avatar=getIntent().getStringExtra("avatar");
         int price=getIntent().getIntExtra("price",0);
         String priceText=price+"";
 
@@ -59,8 +64,16 @@ public class TabInstructorActivity extends AppCompatActivity {
         rating.setText(txtRat);
       TextView age=(TextView)findViewById(R.id.atAge);
         age.setText(txtAge);
-        ImageView av=(ImageView) findViewById(R.id.im);
-        av.setImageResource(image);
+        image=(ImageView) findViewById(R.id.im);
+       loadImageFromAsset(avatar);
+       /* Picasso.with(this)
+                .load("/assets/angela.jpg")
+
+                .placeholder(R.drawable.ic_account_circle_black_24dp)
+                .error(R.drawable.ic_cancel_black_24dp)
+                .into(image);*/
+
+
      TextView txtPrice=(TextView)findViewById(R.id.atPrice);
         txtPrice.setText(priceText);
       TextView url=(TextView)findViewById(R.id.atURL);
@@ -206,6 +219,19 @@ public class TabInstructorActivity extends AppCompatActivity {
             return v;
         }
 
+    }
+
+    public void loadImageFromAsset(String str) {
+        try {
+            // получаем входной поток
+            InputStream ims = getAssets().open(str);
+            // загружаем как Drawable
+            Drawable d = Drawable.createFromStream(ims, null);
+            // выводим картинку в ImageView
+            image.setImageDrawable(d);
+        } catch (IOException ex) {
+            return;
+        }
     }
 }
 

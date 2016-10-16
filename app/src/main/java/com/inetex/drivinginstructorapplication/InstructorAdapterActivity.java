@@ -40,6 +40,8 @@ import java.util.Map;
 
 public class InstructorAdapterActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+
+
     BoxAdapter boxAdapter;
     Intent intent;
 
@@ -60,6 +62,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     TextView quantity;
     Map<String, String> map;
     ArrayList<Instructors> insts = new ArrayList<Instructors>();
+    ArrayList<Instructors> instsFilter = new ArrayList<Instructors>();
     InstructorDbHelper mdHelper;
     Cursor cursor;
 
@@ -86,18 +89,6 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
-       /* mdHelper = new InstructorDbHelper(InstructorAdapterActivity.this);
-        try {
-            mdHelper.createDataBase();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
-        try {
-            mdHelper.openDataBase();
-        } catch (SQLException sqle) {
-            throw sqle;
-        }*/
         quantity = (TextView) findViewById(R.id.quantity);
         //----AsyncTask filldata
         GetInstructors getInstructorsDB= new GetInstructors(this,cursor,mdHelper,insts);
@@ -112,8 +103,8 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         boxAdapter = new BoxAdapter(this, insts);
 
         // настраиваем список
-        ListView lvMain = (ListView) findViewById(R.id.instVar);
-
+        final ListView lvMain = (ListView) findViewById(R.id.instVar);
+        lvMain.setOnItemClickListener(this);
         lvMain.setAdapter(boxAdapter);
 
         //------------ExpandbleListView City, Vechicle,Transsmission,Experrience,Rating--------------------
@@ -146,7 +137,25 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Toast.makeText(getApplicationContext(),
                         groupDataList.get(groupPosition)
-                                + " : " +"Vau "+сhildDataList.get(groupPosition).get(childPosition),Toast.LENGTH_LONG).show();
+                                + " : " +"Vau "+сhildDataList.get(groupPosition).get(childPosition).values()+" "+insts.get(0).getCity(),Toast.LENGTH_LONG).show();
+                for(int i=0;i<insts.size();i++){
+                    if(insts.get(i).getCity().equals(сhildDataList.get(groupPosition).get(childPosition).get("name"))){
+                        instsFilter.add(insts.get(i));
+                    }
+                    else{
+                        i++;
+                    }
+                }
+               Toast.makeText(getApplicationContext(),instsFilter.get(0).getCity()+""+сhildDataList.get(groupPosition).get(childPosition).get("name"),Toast.LENGTH_LONG).show();
+
+                insts.clear();
+                insts.addAll(instsFilter);
+                boxAdapter.notifyDataSetChanged();
+                quantity.setText(String.valueOf(insts.size()) + " Instructors");
+
+
+
+
 
                 return false;
             }
@@ -206,6 +215,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         String worHours = instructors.workingHours;
 
 
+
         intent.putExtra("name", n);
         intent.putExtra("city", c);
         intent.putExtra("exper", e);
@@ -225,62 +235,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
         @Override
         protected Void doInBackground(Void... params) {
-            /*String[] projection = {
 
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_NAME,
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_CITY,
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AVATAR,
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_AGE,
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_EXPERIENCE,
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_RATING,
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_VEHICLE,
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PRICE,
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_URL,
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_WORKDAY,
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_WORKHOURS,
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_PHON,
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_SCHOOL,
-                    InstructorContract.InstructorEntry.COLUMN_INSTRUCTOR_EMAIL
-
-            };*/
-            /*mdHelper = new InstructorDbHelper(InstructorAdapterActivity.this);
-            try {
-                mdHelper.createDataBase();
-            } catch (IOException ioe) {
-                throw new Error("Unable to create database");
-            }
-            try {
-                mdHelper.openDataBase();
-            } catch (SQLException sqle) {
-                throw sqle;
-            }*/
-
-           /* Cursor cursor = mdHelper.query("Instructor", projection, null, null, null, null, null);
-
-            if (cursor.moveToFirst()) {
-                do {
-                    Instructors i = new Instructors();
-
-                    i.setName(cursor.getString(1));
-                    i.setCity(cursor.getString(2));
-                    i.setAvatar(cursor.getString(3));
-                    i.setAge(cursor.getInt(4));
-                    i.setExperience(cursor.getString(5));
-                    i.setRating(cursor.getInt(6));
-                    i.setTypeVehicle(cursor.getString(7));
-                    i.setPricePerHours(cursor.getInt(8));
-                    i.setUrl(cursor.getString(9));
-                    i.setWorkingDays(cursor.getString(10));
-                    i.setWorkingHours(cursor.getString(11));
-                    i.setEmail(cursor.getString(12));
-                    i.setPhon(cursor.getString(13));
-                    i.setSchool(cursor.getString(14));
-                    insts.add(i);
-
-
-                } while (cursor.moveToNext());
-
-            }*/
             ArrayList<String> mCityArray = new ArrayList<>();
             for (int i = 0; i < insts.size(); i++) {
                 if (insts.get(i) != null) {
@@ -356,7 +311,12 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
             super.onPostExecute(aVoid);
             quantity.setText(String.valueOf(insts.size()) + " Instructors");
+
         }
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
     }
 }
 

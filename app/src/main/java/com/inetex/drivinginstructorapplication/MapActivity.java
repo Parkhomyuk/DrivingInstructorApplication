@@ -3,6 +3,7 @@ package com.inetex.drivinginstructorapplication;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Address;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
@@ -63,7 +65,10 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
     ArrayList<String> instructorCity = new ArrayList<>();
     HashMap<String, Integer> instructorQuantity = new HashMap<>();
     Marker instructorMarker;
+    ListView lvMain;
 
+    String where=null;
+    String addressStr;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -77,13 +82,13 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);
-        instructorCity.add("Tel Aviv");
-        instructorCity.add("Haifa");
+
         GetInstructors instructorsDB= new GetInstructors(this,cursor,mdHelper,insts);
         instructorsDB.execute();
         //AsyncTask filldata
         GetInstructorMap instructorsMap = new GetInstructorMap();
         instructorsMap.execute();
+
         //
         final EditText textName = (EditText) findViewById(R.id.findCity);
         textName.setOnKeyListener(new View.OnKeyListener() {
@@ -183,16 +188,19 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.streetview))
                 );
 
-
-
+                if(marker.isVisible())
+                    marker.showInfoWindow();
             }
-            marker.showInfoWindow();
+
+
+
+            MapActivity.this.marker.showInfoWindow();
         }
 
         //-----------add markers------//
 
         for (Map.Entry<String, Integer> entry : instructorQuantity.entrySet()) {
-            String addressStr = entry.getKey();
+              addressStr = entry.getKey();
             Geocoder geoCoder = new Geocoder(MapActivity.this, Locale.getDefault());
             try {
                 List<Address> addresses =
@@ -209,12 +217,34 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
             instructorMarker = googleMap.addMarker(new MarkerOptions()
                     .title(addressStr)
                     .snippet("Instructors " + entry.getValue())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.unnamed))
+                    .alpha(0.8f)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.drivingschoolicon))
                     .position(positionInstructors));
-            instructorMarker.showInfoWindow();
+
+            MapActivity.this.instructorMarker.showInfoWindow();
+
         }
 
         //-----------add markers------//
+//------ markerListener
+
+        // настраиваем список
+        lvMain = (ListView) findViewById(R.id.instVar);
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                instructorMarker.getTitle();
+                where=addressStr;
+                Intent intent = new Intent(MapActivity.this, InstructorAdapterActivity.class);
+
+                startActivity(intent);
+
+
+                return false;
+            }
+        });
+//------ markerListener
 
     }
 

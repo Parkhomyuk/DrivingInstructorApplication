@@ -1,25 +1,21 @@
 package com.inetex.drivinginstructorapplication;
 
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
+
+    import android.graphics.drawable.Drawable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.SlidingDrawer;
+
 import android.widget.TextView;
-import android.graphics.drawable.Drawable;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.squareup.picasso.Picasso;
+
 import java.io.InputStream;
-import java.io.File;
+
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.util.ArrayList;
 
 

@@ -17,7 +17,7 @@
             android:id="@+id/ivImage"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/christophe"
+            android:src="@drawable/ic_account_circle_black_24dp"
             android:scaleType="centerCrop"
             android:layout_gravity="center"
             >
