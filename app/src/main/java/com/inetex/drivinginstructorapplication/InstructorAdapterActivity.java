@@ -24,16 +24,13 @@ import android.widget.ListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.database.sqlite.SQLiteOpenHelper;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.inetex.drivinginstructorapplication.data.GetInstructors;
-import com.inetex.drivinginstructorapplication.data.GetInstructorsByQuery;
 import com.inetex.drivinginstructorapplication.data.InstructorDbHelper;
 import com.twotoasters.jazzylistview.JazzyListView;
 import com.twotoasters.jazzylistview.effects.ZipperEffect;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,11 +44,10 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
     //varible
     private String[] mGroupsArray = new String[]{"City", "Type Vechile", "Tramsmission", "Experience", "Rating", "Gender"};
-
+    Map<String,String> filterMap=new HashMap<>();
     final ArrayList<Map<String, String>> groupDataList = new ArrayList<>();
     //Create a shared collection of items for collections
     final ArrayList<ArrayList<Map<String, String>>> сhildDataList = new ArrayList<>();
-    ArrayList<String> child = new ArrayList<>();
     // create a collection of items for the City group
     ArrayList<Map<String, String>> сhildDataItemList = new ArrayList<>();
     private String[] mTypeVehicleArray = new String[]{"A", "B", "C", "D"};
@@ -88,8 +84,14 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         setContentView(R.layout.activity_instructor_adapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //-----Get Extra from MapActivity
+
+
+        //-----Get Extra from MapActivity
+
         //----AsyncTask filldata
         GetInstructors getInstructorsDB = new GetInstructors(this, cursor, mdHelper, insts);
+
         getInstructorsDB.execute();
         final GetInstructor instructors = new GetInstructor();
         instructors.execute();
@@ -393,6 +395,18 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                     if (mCityArray.contains(insts.get(i).getCity())) i++;
                     else
                         mCityArray.add(insts.get(i).getCity());
+                } else {
+                    i++;
+                }
+            }
+            ArrayList<String> mTypeVehicle=new ArrayList<>();
+
+            for (int i = 0; i < insts.size(); i++) {
+                if (insts.get(i) != null) {
+                    if (mTypeVehicle.contains(insts.get(i).getTypeVehicle()))
+                        i++;
+                    else
+                        mTypeVehicle.add(insts.get(i).getCity());
                 } else {
                     i++;
                 }

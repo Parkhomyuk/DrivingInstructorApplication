@@ -1,10 +1,12 @@
 package com.inetex.drivinginstructorapplication;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,7 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -56,8 +62,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 animateFAB();
                 break;
             case R.id.fab1:
-                /*Intent intentSign= new Intent(MainActivity.this,SignUpRegistration.class);*/
-               /* startActivity(intentSign);*/
+                Intent intentSign= new Intent(MainActivity.this,SignUpRegistration.class);
+                startActivity(intentSign);
                 Log.d("Fab", "Sign in");
                 break;
             case R.id.fab2:
@@ -66,7 +72,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Log.d("Fab", "Map");
                 break;
             case R.id.fab3:
-
+                openDialog();
                 Log.d("Fab", "Fab 3");
                 break;
 
@@ -114,6 +120,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
             Log.d("Fab","open");
 
         }
+    }
+    private void openDialog(){
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("About programm Driving Instructor")
+                .setMessage(R.string.message_in_DialogAlert)
+                .setIcon(R.drawable.steer)
+                .setCancelable(false)
+                .setNegativeButton("Help",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {

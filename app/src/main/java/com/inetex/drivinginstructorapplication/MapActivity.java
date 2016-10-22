@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 
@@ -16,8 +17,11 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -39,6 +43,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.*;
 import com.inetex.drivinginstructorapplication.data.GetInstructors;
 import com.inetex.drivinginstructorapplication.data.InstructorDbHelper;
+import com.twotoasters.jazzylistview.JazzyListView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -236,10 +241,10 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
             public boolean onMarkerClick(Marker marker) {
                 instructorMarker.getTitle();
                 where=addressStr;
-                Intent intent = new Intent(MapActivity.this, InstructorAdapterActivity.class);
+                /*Intent intent = new Intent(MapActivity.this, InstructorAdapterActivity.class);
 
-                startActivity(intent);
-
+                startActivity(intent);*/
+                openDialog(marker.getTitle());
 
                 return false;
             }
@@ -344,7 +349,65 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
 
     }
 
+    private void openDialog(String city){
+final ArrayList<Instructors> instructorsTemp=new ArrayList<>();
+        for(int i=0;i<insts.size();i++){
+            if(insts.get(i).getCity().equals(city)){
+                instructorsTemp.add(insts.get(i));
+            }
+        }
 
+
+        AlertDialog.Builder myDialog =
+                new AlertDialog.Builder(MapActivity.this);
+        myDialog.setTitle("Instructors in "+city);
+
+       ListView listView = new ListView(MapActivity.this);
+
+        listView.setAdapter(new BoxAdapter(getApplicationContext(), instructorsTemp));
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent,
+                                    View view, int position, long id) {
+               /*Toast.makeText(this, instructors.toString(), Toast.LENGTH_LONG).show();*/
+                Intent intent = new Intent(MapActivity.this, TabInstructorActivity.class);
+                Instructors instructors = instructorsTemp.get(position);
+        /*name=(TextView)findViewById(R.id.tvName);*/
+                String n = instructors.name;
+        /*city=(TextView)findViewById(R.id.tvCity);*/
+                String c = instructors.city;
+                String e = instructors.experience;
+                int r = instructors.rating;
+                int a = instructors.age;
+                String image = instructors.avatar;
+                int price = instructors.pricePerHours;
+                String url = instructors.url;
+                String worDays = instructors.workingDays;
+                String worHours = instructors.workingHours;
+
+
+                intent.putExtra("name", n);
+                intent.putExtra("city", c);
+                intent.putExtra("exper", e);
+                intent.putExtra("rating", r);
+                intent.putExtra("age", a);
+                intent.putExtra("avatar", image);
+                intent.putExtra("price", price);
+                intent.putExtra("url", url);
+                intent.putExtra("workDay", worDays);
+                intent.putExtra("workHour", worHours);
+
+
+                startActivity(intent);
+            }});
+
+        myDialog.setNegativeButton("Cancel", null);
+
+        myDialog.setView(listView);
+        myDialog.show();
+    }
 
 
 

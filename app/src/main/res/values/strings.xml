@@ -12,5 +12,26 @@
     <string name="Instructors">" Instructors"</string>
     <string name="reset">reset</string>
     <string name="ready">ready</string>
+    <string name="message_in_DialogAlert">Оцените Opera
+Информация о версии
+
+Версия:	40.0.2308.90 - Используется обновленная версия Opera
+Канал обновлений:	Stable
+Система:	Windows 7 64-bit (WoW64)
+Идентификация браузера
+
+Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36 OPR/40.0.2308.90 (Edition Yx)
+
+Пути
+
+Установка:	C:\Program Files (x86)\Opera
+Профиль:	C:\Users\Кирилл\AppData\Roaming\Opera Software\Opera Stable
+Кэш:	C:\Users\Кирилл\AppData\Local\Opera Software\Opera Stable
+Спасибо всем создателям нового браузера Opera для компьютеров!
+Памяти Гейра Иварсёй (Geir Ivarsøy). © 1995–2016 Opera Software AS. Все права защищены.
+Создано с использованием проекта с открытым кодом Chromium и другого программного обеспечения с открытым кодом.
+Пользовательское соглашение
+Политика конфиденциальности</string>
+    <string name="Sign">Sign</string>
 
 </resources>

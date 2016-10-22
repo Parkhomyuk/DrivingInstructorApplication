@@ -1,6 +1,7 @@
 package com.inetex.drivinginstructorapplication;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -34,12 +36,13 @@ public class TabInstructorActivity extends AppCompatActivity {
     private String textActivityVich;
     private String textActivityMe;
     private String textActivityRev;
+    String txtName;
     ImageView image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_instructor);
-        String txtName=getIntent().getStringExtra("name");
+        txtName=getIntent().getStringExtra("name");
         String txtCity=getIntent().getStringExtra("city");
         String txtExp=getIntent().getStringExtra("exper");
         String txtRat=getIntent().getStringExtra("rating");
@@ -98,7 +101,7 @@ public class TabInstructorActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                recordToInstructor();
 
             }
         });
@@ -232,6 +235,26 @@ public class TabInstructorActivity extends AppCompatActivity {
         } catch (IOException ex) {
             return;
         }
+    }
+    private void recordToInstructor(){
+        LayoutInflater inflater = LayoutInflater.from(TabInstructorActivity.this);
+        View subView = inflater.inflate(R.layout.record_to_instructor, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(TabInstructorActivity.this);
+        builder.setTitle("Record to the Instructor "+"/n"+txtName)
+
+                .setView(subView)
+                .setCancelable(false)
+                /*.setNegativeButton("Help",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })*/;
+
+        AlertDialog alert = builder.create();
+
+        alert.show();
     }
 }
 
