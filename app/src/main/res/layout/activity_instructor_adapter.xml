@@ -34,27 +34,106 @@
           android:orientation="horizontal"
           >
           <Button
-              android:id="@+id/sort"
+              android:id="@+id/ready"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
-              android:text="@string/sort"
+              android:text="@string/ready"
               android:layout_weight="1"
 
               />
           <Button
-              android:id="@+id/filters"
+              android:id="@+id/reset"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
-              android:text="@string/filters"
+              android:text="@string/reset"
               android:layout_weight="1"
               />
-      </LinearLayout>
 
+      </LinearLayout>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="#D9D9D6"
+              android:layout_marginRight="24dp"
+              >
+          <TextView
+              android:id="@+id/text_view_your_choise"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Your choice :"
+              android:textColor="@color/colorPrimaryDark"
+              android:layout_marginBottom="8dp"
+              android:layout_marginRight="8dp"
+              />
+          <TextView
+              android:id="@+id/text_view_city"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="City :"
+              android:textColor="@color/colorPrimaryDark"
+              android:visibility="gone"
+              android:layout_marginBottom="8dp"
+              />
+          <TextView
+              android:id="@+id/text_view_type_vechile"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Type vehicle :"
+              android:textColor="@color/colorPrimaryDark"
+              android:visibility="gone"
+              android:layout_marginBottom="8dp"
+              />
+          <TextView
+              android:id="@+id/text_view_transmission"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Transmission :"
+              android:textColor="@color/colorPrimaryDark"
+              android:visibility="gone"
+              android:layout_marginBottom="8dp"
+              />
+          <TextView
+              android:id="@+id/text_view_experience"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Experience :"
+              android:textColor="@color/colorPrimaryDark"
+              android:visibility="gone"
+              android:layout_marginBottom="8dp"
+              />
+          <TextView
+              android:id="@+id/text_view_rating"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Rating :"
+              android:textColor="@color/colorPrimaryDark"
+              android:visibility="gone"
+              android:layout_marginBottom="8dp"
+              />
+          <TextView
+              android:id="@+id/text_view_gender"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Gender :"
+              android:textColor="@color/colorPrimaryDark"
+              android:visibility="gone"
+              android:layout_marginBottom="8dp"
+              />
+          </LinearLayout>
+          <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="0.5dp"
+              android:background="@color/colorHint"
+
+
+              />
           <ExpandableListView
               android:id="@+id/listViewFilter"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginRight="24dp"
+              android:choiceMode="multipleChoice"
               >
           </ExpandableListView>
 

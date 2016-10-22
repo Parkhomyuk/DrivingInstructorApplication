@@ -9,5 +9,8 @@
     <string name="TabInstructorActivity">Tab of Instructors</string>
     <string name="city">city</string>
     <string name="Map">map</string>
+    <string name="Instructors">" Instructors"</string>
+    <string name="reset">reset</string>
+    <string name="ready">ready</string>
 
 </resources>

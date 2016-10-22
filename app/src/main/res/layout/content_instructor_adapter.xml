@@ -21,11 +21,11 @@
     android:text="quantity"
     android:padding="8dp"
     android:background="#f5f0f6" />
-    <ListView
+    <com.twotoasters.jazzylistview.JazzyListView
         android:id="@+id/instVar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-    </ListView>
+    </com.twotoasters.jazzylistview.JazzyListView>
 
 </LinearLayout>
