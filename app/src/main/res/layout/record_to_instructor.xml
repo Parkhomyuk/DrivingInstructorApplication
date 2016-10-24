@@ -87,26 +87,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        >
+        android:weightSum="1"
+        android:layout_gravity="center_horizontal">
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="4 hour"
+            android:layout_weight="0.3"
+            android:textSize="8sp"
             />
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="10 hour"
+            android:layout_weight="0.3"
+            android:textSize="8sp"
             />
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="20 hour"
+            android:layout_weight="0.3"
+            android:textSize="8sp"
+
             />
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="40 hour"
+            android:layout_weight="0.3"
+            android:textSize="8sp"
             />
     </LinearLayout>
 
@@ -114,6 +124,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="record to the instructor"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/recInstr"
         />
 
 </LinearLayout>

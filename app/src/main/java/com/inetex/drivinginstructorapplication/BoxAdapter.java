@@ -65,7 +65,7 @@ public class BoxAdapter extends BaseAdapter  {
 
         ((TextView) view.findViewById(R.id.tvName)).setText(instructors.name);
         ((TextView) view.findViewById(R.id.tvCity)).setText(instructors.city);
-        ((TextView) view.findViewById(R.id.tvExperience)).setText(instructors.experience);
+        ((TextView) view.findViewById(R.id.tvExperience)).setText(instructors.experience+"");
         ((TextView) view.findViewById(R.id.tvRating)).setText(instructors.rating+"");
         ((TextView) view.findViewById(R.id.tvTypeVeh)).setText(instructors.typeVehicle);
 

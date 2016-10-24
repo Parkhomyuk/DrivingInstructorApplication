@@ -37,12 +37,29 @@
         android:layout_gravity="center_vertical" />
 
 </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="32dp"
-        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_school_black_24dp"
+                android:layout_margin="16dp"
+                />
+
+            <TextView
+                android:id="@+id/frSchool"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="one"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/mehm"
-            android:layout_margin="24dp"
+            android:layout_margin="16dp"
             />
 
         <TextView
@@ -75,21 +92,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/autom"
-            android:layout_margin="24dp"
+            android:layout_margin="16dp"
             />
 
         <TextView
             android:id="@+id/frVehcA"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:text="one"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:layout_centerInParent="true"
             android:layout_gravity="center_vertical" />
 </LinearLayout>
 
     </LinearLayout>
-    </LinearLayout>
+
     </ScrollView>
 </RelativeLayout>

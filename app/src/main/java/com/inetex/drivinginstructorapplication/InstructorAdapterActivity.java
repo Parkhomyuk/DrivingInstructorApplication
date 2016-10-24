@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.inetex.drivinginstructorapplication.data.GetInstructors;
+import com.inetex.drivinginstructorapplication.data.InstructorContract;
 import com.inetex.drivinginstructorapplication.data.InstructorDbHelper;
 import com.twotoasters.jazzylistview.JazzyListView;
 import com.twotoasters.jazzylistview.effects.ZipperEffect;
@@ -44,7 +46,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
     //varible
     private String[] mGroupsArray = new String[]{"City", "Type Vechile", "Tramsmission", "Experience", "Rating", "Gender"};
-    Map<String,String> filterMap=new HashMap<>();
+
     final ArrayList<Map<String, String>> groupDataList = new ArrayList<>();
     //Create a shared collection of items for collections
     final ArrayList<ArrayList<Map<String, String>>> сhildDataList = new ArrayList<>();
@@ -58,6 +60,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     //varible
     TextView quantity;
     Map<String, String> map;
+
     ArrayList<Instructors> insts = new ArrayList<Instructors>();
     ArrayList<Instructors> instsFilter = new ArrayList<Instructors>();
 
@@ -84,19 +87,14 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         setContentView(R.layout.activity_instructor_adapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //-----Get Extra from MapActivity
-
-
-        //-----Get Extra from MapActivity
 
         //----AsyncTask filldata
-        GetInstructors getInstructorsDB = new GetInstructors(this, cursor, mdHelper, insts);
-
-        getInstructorsDB.execute();
+        final GetInstructors instructorsDB= new GetInstructors(this,cursor,insts);
+        instructorsDB.execute();
         final GetInstructor instructors = new GetInstructor();
         instructors.execute();
        // mdHelper=getInstructorsDB.getMdHelper();
-        mdHelper = new InstructorDbHelper(this);
+       /* mdHelper = new InstructorDbHelper(this);
         try {
             mdHelper.createDataBase();
         } catch (IOException ioe) {
@@ -106,7 +104,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
             mdHelper.openDataBase();
         } catch (SQLException sqle) {
             throw sqle;
-        }
+        }*/
 
         //----AsyncTask filldata
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -135,9 +133,9 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                //cityinfo.clear();
                instsFilter.clear();
                insts.clear();
-                db=mdHelper.getWritableDatabase();
+                db=instructorsDB.getMdHelper().getWritableDatabase();
 
-                Cursor cursor = db.query("Instructor", null, null, null, null, null, null);
+                Cursor cursor = db.query("Instructor ", null, null, null, null, null, null);
                 fillData(insts, cursor);
 
 
@@ -153,14 +151,21 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
             @Override
             public void onClick(View v) {
-                instsFilter.clear();
+
                 insts.clear();
-                db=mdHelper.getWritableDatabase();
+                db=instructorsDB.getMdHelper().getWritableDatabase();
                 Cursor cursor = null;
                 for(int i=0;i<cityinfo.size();i++) {
                     cursor = db.query("Instructor", null, "city = ?", new String[]{cityinfo.get(i)}, null, null, null);
                     fillData(insts, cursor);
                 }
+                /*for(int i=0;i<cityinfo.size();i++) {
+                    cursor = db.rawQuery("Select * from "+ InstructorContract.InstructorEntry.TABLE_NAME+" where "+cityinfo.get(i)+" experience<'5'", null);
+                    fillData(insts, cursor);
+                }
+                cursor = db.rawQuery("Select * from Instructor where city='Tel Aviv' and experience<'5'", null);
+                fillData(insts, cursor);*/
+                cityinfo.clear();
                 boxAdapter.notifyDataSetChanged();
                 quantity.setText(String.valueOf(insts.size()) + getString(R.string.Instructors));
 
@@ -222,49 +227,51 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
+                /*if(сhildDataList.get(groupPosition).equals(mGroupsArray[0])) {
+                    for (int i = 0; i < insts.size(); i++) {
+                        if (insts.get(i).getCity().equals(сhildDataList.get(groupPosition).get(childPosition).get("name"))) {
+                            if (instsFilter.contains(insts.get(i))) {
+                                instsFilter.remove(insts.get(i));
+                            } else {
 
+                                instsFilter.add(insts.get(i));
 
-                for(int i=0;i<insts.size();i++){
-                    if(insts.get(i).getCity().equals(сhildDataList.get(groupPosition).get(childPosition).get("name"))){
-                        if(instsFilter.contains(insts.get(i))){
-                            instsFilter.remove(insts.get(i));
-                        }
-                        else {
-                            instsFilter.add(insts.get(i));
-
+                            }
+                        } else {
+                            i++;
                         }
                     }
-                    else{
-                        i++;
+                }
+
+*/
+               if(groupDataList.get(groupPosition).get("groupName").equals(mGroupsArray[0])) {
+                   if (cityinfo.contains(сhildDataList.get(groupPosition).get(childPosition).get("name"))) {
+
+                       cityinfo.remove(сhildDataList.get(groupPosition).get(childPosition).get("name"));
+
+                   } else {
+                       cityinfo.add(сhildDataList.get(groupPosition).get(childPosition).get("name"));
+                   }
+               }
+
+                    for (int j = 0; j < cityinfo.size(); j++) {
+                        str = str + (cityinfo.get(j)) + ", ";
+
                     }
-                }
-                if(cityinfo.contains(сhildDataList.get(groupPosition).get(childPosition).get("name"))){
-
-                    cityinfo.remove(сhildDataList.get(groupPosition).get(childPosition).get("name"));
-
-                }
-                else{
-                    cityinfo.add(сhildDataList.get(groupPosition).get(childPosition).get("name"));
-                }
-
-
-                for(int j=0;j<cityinfo.size();j++){
-                    str=str+(cityinfo.get(j))+", ";
-
-                }
+               // Toast.makeText(getApplicationContext(),instsFilter.get(0).getCity()+""+groupPosition+сhildDataList.get(groupPosition)+" trulzlz"+сhildDataList.get(groupPosition).get(childPosition).get("name"),Toast.LENGTH_LONG).show();
 
                 /*strBilder.append(сhildDataList.get(groupPosition).get(childPosition).get("name")+", ");*/
                 selection.setText(str);
                 selection.setVisibility(View.VISIBLE);
                 str="City :";
 
-               Toast.makeText(getApplicationContext(),instsFilter.get(0).getCity()+""+сhildDataList.get(groupPosition).get(childPosition).get("name"),Toast.LENGTH_LONG).show();
+              // Toast.makeText(getApplicationContext(),instsFilter.get(0).getCity()+""+"сhildDataList.get(groupPosition) "+сhildDataList.get(groupPosition)+" trulzlz"+сhildDataList.get(groupPosition).get(childPosition).get("name"),Toast.LENGTH_LONG).show();
 
                // insts.clear();
             //    insts.addAll(instsFilter);
                 boxAdapter.notifyDataSetChanged();
                 quantity.setText(String.valueOf(insts.size()) + getString(R.string.Instructors));
-
+                Log.v("Data list",groupDataList.get(groupPosition).get("groupName"));
 
                 return false;
 
@@ -318,8 +325,9 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         /*name=(TextView)findViewById(R.id.tvName);*/
         String n = instructors.name;
         /*city=(TextView)findViewById(R.id.tvCity);*/
+        String em=instructors.email;
         String c = instructors.city;
-        String e = instructors.experience;
+        int e = instructors.experience;
         int r = instructors.rating;
         int a = instructors.age;
         String image = instructors.avatar;
@@ -327,18 +335,25 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         String url = instructors.url;
         String worDays = instructors.workingDays;
         String worHours = instructors.workingHours;
+        String transmission = instructors.transmission;
+        String school = instructors.school;
+        String sex = instructors.sex;
 
 
         intent.putExtra("name", n);
         intent.putExtra("city", c);
         intent.putExtra("exper", e);
         intent.putExtra("rating", r);
+        intent.putExtra("email",em);
         intent.putExtra("age", a);
         intent.putExtra("avatar", image);
         intent.putExtra("price", price);
         intent.putExtra("url", url);
         intent.putExtra("workDay", worDays);
         intent.putExtra("workHour", worHours);
+        intent.putExtra("transmission", transmission);
+        intent.putExtra("school", school);
+        intent.putExtra("sex", sex);
 
 
         startActivity(intent);
@@ -494,7 +509,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                     i.setCity(cursor.getString(2));
                     i.setAvatar(cursor.getString(3));
                     i.setAge(cursor.getInt(4));
-                    i.setExperience(cursor.getString(5));
+                    i.setExperience(cursor.getInt(5));
                     i.setRating(cursor.getInt(6));
                     i.setTypeVehicle(cursor.getString(7));
                     i.setPricePerHours(cursor.getInt(8));
@@ -503,7 +518,9 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                     i.setWorkingHours(cursor.getString(11));
                     i.setEmail(cursor.getString(12));
                     i.setPhon(cursor.getString(13));
-                    i.setSchool(cursor.getString(14));
+                    i.setSchool(cursor.getString(15));
+                    i.setTransmission(cursor.getString(16));
+                    i.setSex(cursor.getString(17));
                     insts.add(i);
 
 

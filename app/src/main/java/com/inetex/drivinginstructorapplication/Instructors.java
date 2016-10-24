@@ -6,7 +6,7 @@ public class Instructors {
     String city;
     String avatar;
     int age;
-    String experience;
+    int experience;
     int rating;
     String typeVehicle;
     int pricePerHours;
@@ -17,8 +17,10 @@ public class Instructors {
     String school;
     String email;
     String password;
+    String transmission;
+    String sex;
 
-    public Instructors(String name, String city, String avatar, int age, String experience, int rating, String typeVehicle, int pricePerHours, String url, String workingDays, String workingHours, String phon, String school, String email, String password) {
+    public Instructors(String name, String city, String avatar, int age, int experience, int rating, String typeVehicle, int pricePerHours, String url, String workingDays, String workingHours, String phon, String school, String email, String password,String tranmission,String sex) {
         this.name = name;
         this.city = city;
         this.avatar = avatar;
@@ -34,6 +36,8 @@ public class Instructors {
         this.school = school;
         this.email = email;
         this.password = password;
+        this.transmission=tranmission;
+        this.sex=sex;
     }
 
     public Instructors() {
@@ -63,7 +67,13 @@ public class Instructors {
         return city;
     }
 
+    public String getSex() {
+        return sex;
+    }
 
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
     public int getAge() {
         return age;
@@ -77,7 +87,7 @@ public class Instructors {
         return pricePerHours;
     }
 
-    public String getExperience() {
+    public int getExperience() {
         return experience;
     }
 
@@ -110,11 +120,17 @@ public class Instructors {
     }
 
 
-    public void setExperience(String experience) {
+    public void setExperience(int experience) {
         this.experience = experience;
     }
 
+    public String getTransmission() {
+        return transmission;
+    }
 
+    public void setTransmission(String transmission) {
+        this.transmission = transmission;
+    }
 
     public void setTypeVehicle(String typeVehicle) {
         this.typeVehicle = typeVehicle;

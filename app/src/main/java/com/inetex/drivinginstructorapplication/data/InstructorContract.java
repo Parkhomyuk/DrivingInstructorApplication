@@ -44,6 +44,8 @@ public final class InstructorContract {
         public final static String COLUMN_INSTRUCTOR_URL="url";
         public final static String COLUMN_INSTRUCTOR_WORKDAY="workday";
         public final static String COLUMN_INSTRUCTOR_WORKHOURS="workhours";
+        public final static String COLUMN_INSTRUCTOR_TRANSMISSION="transmission";
+        public final static String COLUMN_INSTRUCTOR_SEX="sex";
 
         /**
          * Possible values for the gender of the Instructor.

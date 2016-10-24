@@ -88,7 +88,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);
 
-        GetInstructors instructorsDB= new GetInstructors(this,cursor,mdHelper,insts);
+        GetInstructors instructorsDB= new GetInstructors(this,cursor,insts);
         instructorsDB.execute();
         //AsyncTask filldata
         GetInstructorMap instructorsMap = new GetInstructorMap();
@@ -241,9 +241,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback, Locatio
             public boolean onMarkerClick(Marker marker) {
                 instructorMarker.getTitle();
                 where=addressStr;
-                /*Intent intent = new Intent(MapActivity.this, InstructorAdapterActivity.class);
 
-                startActivity(intent);*/
                 openDialog(marker.getTitle());
 
                 return false;
@@ -371,14 +369,14 @@ final ArrayList<Instructors> instructorsTemp=new ArrayList<>();
             @Override
             public void onItemClick(AdapterView<?> parent,
                                     View view, int position, long id) {
-               /*Toast.makeText(this, instructors.toString(), Toast.LENGTH_LONG).show();*/
+
                 Intent intent = new Intent(MapActivity.this, TabInstructorActivity.class);
                 Instructors instructors = instructorsTemp.get(position);
-        /*name=(TextView)findViewById(R.id.tvName);*/
+
                 String n = instructors.name;
-        /*city=(TextView)findViewById(R.id.tvCity);*/
+
                 String c = instructors.city;
-                String e = instructors.experience;
+                int e = instructors.experience;
                 int r = instructors.rating;
                 int a = instructors.age;
                 String image = instructors.avatar;

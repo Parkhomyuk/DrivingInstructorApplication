@@ -130,7 +130,8 @@ public class InstructorDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase checkDB = null;
         try {
             String myPath = DB_PATH + DB_NAME;
-            checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+           /* checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);*/
+            checkDB = SQLiteDatabase.openOrCreateDatabase(myPath, null);
         } catch (SQLiteException e) {
         }
         if (checkDB != null) {
@@ -156,7 +157,8 @@ public class InstructorDbHelper extends SQLiteOpenHelper {
 
     public void openDataBase() throws SQLException {
         String myPath = DB_PATH + DB_NAME;
-        myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+        /*myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);*/
+        myDataBase = SQLiteDatabase.openOrCreateDatabase(myPath,null);
 
     }
 
