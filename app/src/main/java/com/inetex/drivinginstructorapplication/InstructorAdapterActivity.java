@@ -56,7 +56,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     private String[] mTransmissionArray = new String[]{"Automatic", "Manual"};
     private String[] mExperienceArray = new String[]{"1-4", "5-8", "9-12", "13 >"};
     private String[] mRatingArray = new String[]{"0-19", "20-39", "40-59", "60-99", "100 >"};
-    private String[] mSexArray = new String[]{"no matter", "Man", "Woman"};
+    private String[] mSexArray = new String[]{ "male", "female"};
     //varible
     TextView quantity;
     Map<String, String> map;
@@ -66,11 +66,14 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
     Cursor cursor;
     TextView selection;
+    TextView selectionSex;
     TextView selectionTypeVehicle;
 
     String  str="City :";
+    String  strSex="Gender :";
     String  strVehicle="Type vehicle :";
     ArrayList<String> cityinfo=new ArrayList<>();
+    ArrayList<String> sexinfo=new ArrayList<>();
     JazzyListView lvMain;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -129,9 +132,12 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
             @Override
             public void onClick(View v) {
                selection.setText("");
+               selectionSex.setText("");
                selection.setVisibility(View.GONE);
-               //cityinfo.clear();
-               instsFilter.clear();
+               selectionSex.setVisibility(View.GONE);
+               cityinfo.clear();
+               sexinfo.clear();
+
                insts.clear();
                 db=instructorsDB.getMdHelper().getWritableDatabase();
 
@@ -153,12 +159,69 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
             public void onClick(View v) {
 
                 insts.clear();
+                String strinTemp;
+                StringBuilder cityStr= new StringBuilder();
+                StringBuilder sexStr= new StringBuilder();
+                for(int i=0;i<cityinfo.size();i++){
+                    strinTemp="'"+cityinfo.get(i)+"'";
+                    cityStr.append(strinTemp+",");
+                }
+                for(int i=0;i<sexinfo.size();i++){
+                    strinTemp="'"+sexinfo.get(i)+"'";
+                    sexStr.append(strinTemp+",");
+                }
+                sexStr.deleteCharAt(sexStr.length()-1);
+                cityStr.deleteCharAt(cityStr.length()-1);
                 db=instructorsDB.getMdHelper().getWritableDatabase();
                 Cursor cursor = null;
-                for(int i=0;i<cityinfo.size();i++) {
-                    cursor = db.query("Instructor", null, "city = ?", new String[]{cityinfo.get(i)}, null, null, null);
+               /* Cursor c = sqlDatabase.rawQuery("select docid as _id, recipeID from " + TABLE_RECIPE_NAME +
+                        " where " + KEY_ownerID + " = ? AND  " + KEY_partnerID + " = ? AND  " + KEY_advertiserID + " = ? AND " + KEY_chefID + " = ?", new String[] { ownerID, partnerID, advertiserID, chefID });*/
+
+              //  cursor = db.query("Instructor", null, "city=? and sex=?", new String[]{"'Netania','Tel Aviv'","male"}, null, null, null);
+                cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + " where " +" city IN("+cityStr+")"+" and "+ " sex IN("+sexStr+")", null);
+                fillData(insts, cursor);
+                /*if(cityinfo.size()!=0) {
+                    if(sexinfo.size()!=0) {
+                        q = "city=?"+" and "+"sex =?";
+                         str=new String[]{cityinfo.get(k),sexinfo.get(j)};
+                    }
+                    else{
+                        q = "city=?";
+                        str=new String[]{cityinfo.get(k)};
+                    }
+                }
+                else{
+                    q="sex=?";
+                    str=new String[]{sexinfo.get(j)};
+                }
+
+
+                do{
+                    do{
+                        cursor = db.query("Instructor", null, q, str, null, null, null);
+                        fillData(insts, cursor);
+                        ++j;
+                    }while(j<sexinfo.size());
+                    ++k;
+
+                }while(k<cityinfo.size());
+                q=null;
+                str=null;*/
+                /*for(int i=0;i<cityinfo.size();i++) {
+
+                for(int j=0;j<sexinfo.size();j++) {
+                    //  cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + " where " +   sexinfo.get(j) , null);
+                    cursor = db.query("Instructor", null, "city=? and sex = ?", new String[]{cityinfo.get(i),sexinfo.get(j)}, null, null, null);
                     fillData(insts, cursor);
                 }
+                }*/
+                /*for(int i=0;i<cityinfo.size();i++) {
+                    for(int j=0;j<sexinfo.size();j++) {
+                        //  cursor = db.query("Instructor", null, "city = ?", new String[]{cityinfo.get(i)}, null, null, null);
+                        cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + " where " +"'" +cityinfo.get(i) +"'"+" AND "+"'"+ sexinfo.get(j)+"'", null);
+                    }
+                        fillData(insts, cursor);
+                }*/
                 /*for(int i=0;i<cityinfo.size();i++) {
                     cursor = db.rawQuery("Select * from "+ InstructorContract.InstructorEntry.TABLE_NAME+" where "+cityinfo.get(i)+" experience<'5'", null);
                     fillData(insts, cursor);
@@ -217,6 +280,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         }
         //Filter listner
         selection=(TextView)findViewById(R.id.text_view_city);
+        selectionSex=(TextView)findViewById(R.id.text_view_gender);
         selectionTypeVehicle=(TextView)findViewById(R.id.text_view_type_vechile);
 
         /* expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener(){*/
@@ -253,17 +317,43 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                        cityinfo.add(сhildDataList.get(groupPosition).get(childPosition).get("name"));
                    }
                }
+                if(groupDataList.get(groupPosition).get("groupName").equals(mGroupsArray[5])) {
+                    if (sexinfo.contains(сhildDataList.get(groupPosition).get(childPosition).get("name"))) {
+
+                        sexinfo.remove(сhildDataList.get(groupPosition).get(childPosition).get("name"));
+
+                    } else {
+                        sexinfo.add(сhildDataList.get(groupPosition).get(childPosition).get("name"));
+                    }
+                }
 
                     for (int j = 0; j < cityinfo.size(); j++) {
                         str = str + (cityinfo.get(j)) + ", ";
 
                     }
+                for (int j = 0; j < sexinfo.size(); j++) {
+                    strSex = strSex + (sexinfo.get(j)) + ", ";
+
+                }
                // Toast.makeText(getApplicationContext(),instsFilter.get(0).getCity()+""+groupPosition+сhildDataList.get(groupPosition)+" trulzlz"+сhildDataList.get(groupPosition).get(childPosition).get("name"),Toast.LENGTH_LONG).show();
 
                 /*strBilder.append(сhildDataList.get(groupPosition).get(childPosition).get("name")+", ");*/
                 selection.setText(str);
-                selection.setVisibility(View.VISIBLE);
+                selectionSex.setText(strSex);
+                if(cityinfo.size()!=0) {
+                    selection.setVisibility(View.VISIBLE);
+                }
+                else{
+                    selection.setVisibility(View.GONE);
+                }
+                if(sexinfo.size()!=0) {
+                    selectionSex.setVisibility(View.VISIBLE);
+                }
+                else{
+                    selectionSex.setVisibility(View.GONE);
+                }
                 str="City :";
+                strSex="Gender :";
 
               // Toast.makeText(getApplicationContext(),instsFilter.get(0).getCity()+""+"сhildDataList.get(groupPosition) "+сhildDataList.get(groupPosition)+" trulzlz"+сhildDataList.get(groupPosition).get(childPosition).get("name"),Toast.LENGTH_LONG).show();
 
@@ -414,6 +504,17 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                     i++;
                 }
             }
+            ArrayList<String> mGenderArray = new ArrayList<>();
+            for (int i = 0; i < insts.size(); i++) {
+                if(mGenderArray.size()==2)break;
+                if (insts.get(i) != null) {
+                    if (mGenderArray.contains(insts.get(i).getSex())) i++;
+                    else
+                        mGenderArray.add(insts.get(i).getSex());
+                } else {
+                    i++;
+                }
+            }
             ArrayList<String> mTypeVehicle=new ArrayList<>();
 
             for (int i = 0; i < insts.size(); i++) {
@@ -474,7 +575,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
             сhildDataList.add(сhildDataItemList);
             //create a collection of items for the Sex
             сhildDataItemList = new ArrayList<>();
-            for (String sex : mSexArray) {
+            for (String sex : mGenderArray) {
                 map = new HashMap<>();
                 map.put("name", sex);
                 сhildDataItemList.add(map);
