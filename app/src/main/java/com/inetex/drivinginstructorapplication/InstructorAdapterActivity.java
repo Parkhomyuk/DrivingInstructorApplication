@@ -1,9 +1,7 @@
 package com.inetex.drivinginstructorapplication;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -24,16 +22,15 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.inetex.drivinginstructorapplication.data.GetInstructors;
 import com.inetex.drivinginstructorapplication.data.InstructorContract;
-import com.inetex.drivinginstructorapplication.data.InstructorDbHelper;
 import com.twotoasters.jazzylistview.JazzyListView;
 import com.twotoasters.jazzylistview.effects.ZipperEffect;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,9 +50,11 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     // create a collection of items for the City group
     ArrayList<Map<String, String>> сhildDataItemList = new ArrayList<>();
     private String[] mTypeVehicleArray = new String[]{"A", "B", "C", "D"};
+    private String[] mAllTypeV= new String[]{"A","A B","A B C","A B C D","A C","A C D","B","B C","B C D","B D","C","C D","D"};
     private String[] mTransmissionArray = new String[]{"automatic", "manual"};
     private String[] mExperienceArray = new String[]{">1", ">5", ">9", ">13"};
-    private String[] mRatingArray = new String[]{"0-19", "20-39", "40-59", "60-99", "100 >"};
+    private String[] mRatingArray = new String[]{">2",">3",">4",">5",">6", ">7", ">8", ">9"};
+
 
     //varible
     TextView quantity;
@@ -69,6 +68,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     TextView selectionSex;
     TextView selectionTrans;
     TextView selectionExper;
+    TextView selectionRating;
     TextView selectionTypeVehicle;
 
     String  str="City :";
@@ -76,10 +76,13 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     String  strTrans="Transmission :";
     String  strVehicle="Type vehicle :";
     String  strExper="Experience :";
+    String  strRating="Rating :";
     ArrayList<String> cityinfo=new ArrayList<>();
     ArrayList<String> sexinfo=new ArrayList<>();
     ArrayList<String> transmissioninfo=new ArrayList<>();
     ArrayList<String> experinfo=new ArrayList<>();
+    ArrayList<String> ratinginfo=new ArrayList<>();
+    ArrayList<String> typeVinfo=new ArrayList<String>();
     JazzyListView lvMain;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -141,10 +144,15 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                selectionSex.setText("");
                selection.setVisibility(View.GONE);
                selectionSex.setVisibility(View.GONE);
+               selectionTypeVehicle.setVisibility(View.GONE);
+               selectionExper.setVisibility(View.GONE);
+               selectionRating.setVisibility(View.GONE);
                cityinfo.clear();
                sexinfo.clear();
                transmissioninfo.clear();
                experinfo.clear();
+               ratinginfo.clear();
+               typeVinfo.clear();
                insts.clear();
                 db=instructorsDB.getMdHelper().getWritableDatabase();
 
@@ -171,6 +179,8 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                 StringBuilder sexStr= new StringBuilder();
                 StringBuilder transStr= new StringBuilder();
                 StringBuilder experStr= new StringBuilder();
+                StringBuilder ratingStr= new StringBuilder();
+                StringBuilder typeVStr= new StringBuilder();
                 for(int i=0;i<cityinfo.size();i++){
                     strinTemp="'"+cityinfo.get(i)+"'";
                     cityStr.append(strinTemp+",");
@@ -187,20 +197,64 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                     strinTemp=experinfo.get(i);
                     experStr.append(strinTemp);
                 }
-                sexStr.deleteCharAt(sexStr.length()-1);
-                cityStr.deleteCharAt(cityStr.length()-1);
+                for(int i=0;i<ratinginfo.size();i++){
+                    strinTemp=ratinginfo.get(i);
+                    ratingStr.append(strinTemp);
+                }
+                for(int i=0;i<typeVinfo.size();i++){
+                    strinTemp="'"+typeVinfo.get(i)+"'";
+                    typeVStr.append(strinTemp+",");
+                }
+                if(sexStr.length()!=0) {
+                    sexStr.deleteCharAt(sexStr.length() - 1);
+                }
+                if(cityStr.length()!=0) {
+                    cityStr.deleteCharAt(cityStr.length() - 1);
+                }
+                if(typeVStr.length()!=0) {
+                    typeVStr.deleteCharAt(typeVStr.length() - 1);
+                }
                 transStr.append(" 'automatic manual'");
-
+                StringBuilder query = new StringBuilder();
+                if(cityinfo.size()!=0) {
+                    query.append(" city IN("+cityStr+")");
+                }
+                if(sexinfo.size()!=0) {
+                    query.append(" and sex IN("+sexStr+")");
+                }
+                if(transmissioninfo.size()!=0) {
+                    query.append( " and transmission IN("+transStr+")");
+                }
+                if(experinfo.size()!=0) {
+                    query.append( " and experience "+experStr+" ");
+                }
+                if(ratinginfo.size()!=0) {
+                    query.append( " and rating "+ratingStr+" ");
+                }
+                if(typeVinfo.size()!=0) {
+                    query.append( " and vehicle IN("+typeVStr+") ");
+                }
+                String stringQuery=query.toString();
                 db=instructorsDB.getMdHelper().getWritableDatabase();
                 Cursor cursor = null;
 
-                cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + " where " +" city IN("+cityStr+")"+" and "+ " sex IN("+sexStr+")"+" and transmission IN("+transStr+")"+" and experience "+experStr, null);
+             /*   cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + " where "
+                        +" city IN("+cityStr+")"
+                        +" and sex IN("+sexStr+")"
+                        +" and transmission IN("+transStr+")"
+                        +" and experience "+experStr+" "
+                        +" and rating "+ratingStr+" "
+                        +" and vehicle IN("+typeVStr+") "
+                        , null);*/
+                cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + " where "
+                                +stringQuery, null);
                 fillData(insts, cursor);
 
                 //cityinfo.clear();
 
                 boxAdapter.notifyDataSetChanged();
                 quantity.setText(String.valueOf(insts.size()) + getString(R.string.Instructors));
+                query=null;
 
             }
         });
@@ -254,6 +308,8 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         selectionTypeVehicle=(TextView)findViewById(R.id.text_view_type_vechile);
         selectionTrans=(TextView)findViewById(R.id.text_view_transmission);
         selectionExper=(TextView)findViewById(R.id.text_view_experience);
+        selectionRating=(TextView)findViewById(R.id.text_view_rating);
+
 
 
         /* expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener(){*/
@@ -263,6 +319,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
 
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
 
                if(groupDataList.get(groupPosition).get("groupName").equals(mGroupsArray[0])) {
                    if (cityinfo.contains(сhildDataList.get(groupPosition).get(childPosition).get("name"))) {
@@ -283,7 +340,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                     }
                 }
                 if(groupDataList.get(groupPosition).get("groupName").equals(mGroupsArray[2])) {
-                    //  transmissioninfo.add("automatic manual");
+
                     if (transmissioninfo.contains(сhildDataList.get(groupPosition).get(childPosition).get("name"))) {
 
                         transmissioninfo.remove(сhildDataList.get(groupPosition).get(childPosition).get("name"));
@@ -293,18 +350,48 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                     }
                 }
                 if(groupDataList.get(groupPosition).get("groupName").equals(mGroupsArray[3])) {
-                    //  transmissioninfo.add("automatic manual");
+
                     if (experinfo.size() <=1) {
                         if (experinfo.contains(сhildDataList.get(groupPosition).get(childPosition).get("name"))) {
 
                             experinfo.remove(сhildDataList.get(groupPosition).get(childPosition).get("name"));
 
                         } else {
-                            experinfo.add(сhildDataList.get(groupPosition).get(childPosition).get("name"));
+                            if(experinfo.size()==0) {
+                                experinfo.add(сhildDataList.get(groupPosition).get(childPosition).get("name"));
+                            }
                         }
                     }
                 }
+                if(groupDataList.get(groupPosition).get("groupName").equals(mGroupsArray[4])) {
 
+                    if (ratinginfo.size() <=1) {
+                        if (ratinginfo.contains(сhildDataList.get(groupPosition).get(childPosition).get("name"))) {
+
+                            ratinginfo.remove(сhildDataList.get(groupPosition).get(childPosition).get("name"));
+
+                        } else {
+                            if(ratinginfo.size()==0) {
+                                ratinginfo.add(сhildDataList.get(groupPosition).get(childPosition).get("name"));
+                            }
+                        }
+                    }
+                }
+                if(groupDataList.get(groupPosition).get("groupName").equals(mGroupsArray[1])) {
+
+                    if (typeVinfo.contains(сhildDataList.get(groupPosition).get(childPosition).get("name"))) {
+
+                        typeVinfo.remove(сhildDataList.get(groupPosition).get(childPosition).get("name"));
+
+                    } else {
+                        for (int i = 0; i < mAllTypeV.length; i++) {
+
+                            if (mAllTypeV[i].contains(сhildDataList.get(groupPosition).get(childPosition).get("name"))) {
+                                typeVinfo.add(mAllTypeV[i]);
+                            }
+                        }
+                    }
+                }
                     for (int j = 0; j < cityinfo.size(); j++) {
                         str = str + (cityinfo.get(j)) + ", ";
 
@@ -321,6 +408,15 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                     strExper = strExper + (experinfo.get(j));
 
                 }
+                for (int j = 0; j < ratinginfo.size(); j++) {
+                    strRating = strRating + (ratinginfo.get(j));
+
+                }
+                for (int j = 0; j < typeVinfo.size(); j++) {
+                    if(typeVinfo.get(j).equals("A")||typeVinfo.get(j).equals("B")||typeVinfo.get(j).equals("C")||typeVinfo.get(j).equals("D")) {
+                        strVehicle = strVehicle + (typeVinfo.get(j) + " , ");
+                    }
+                }
                // Toast.makeText(getApplicationContext(),instsFilter.get(0).getCity()+""+groupPosition+сhildDataList.get(groupPosition)+" trulzlz"+сhildDataList.get(groupPosition).get(childPosition).get("name"),Toast.LENGTH_LONG).show();
 
                 /*strBilder.append(сhildDataList.get(groupPosition).get(childPosition).get("name")+", ");*/
@@ -328,6 +424,8 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                 selectionSex.setText(strSex);
                 selectionTrans.setText(strTrans);
                 selectionExper.setText(strExper);
+                selectionRating.setText(strRating);
+                selectionTypeVehicle.setText(strVehicle);
                 if(cityinfo.size()!=0) {
                     selection.setVisibility(View.VISIBLE);
                 }
@@ -352,10 +450,24 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                 else{
                     selectionExper.setVisibility(View.GONE);
                 }
+                if(ratinginfo.size()!=0) {
+                    selectionRating.setVisibility(View.VISIBLE);
+                }
+                else{
+                    selectionRating.setVisibility(View.GONE);
+                }
+                if(typeVinfo.size()!=0) {
+                    selectionTypeVehicle.setVisibility(View.VISIBLE);
+                }
+                else{
+                    selectionTypeVehicle.setVisibility(View.GONE);
+                }
                 str="City :";
                 strSex="Gender :";
                 strTrans="Transmission :";
                 strExper="Experience :";
+                strRating="Rating :";
+                strVehicle="Type vihecle :";
 
               // Toast.makeText(getApplicationContext(),instsFilter.get(0).getCity()+""+"сhildDataList.get(groupPosition) "+сhildDataList.get(groupPosition)+" trulzlz"+сhildDataList.get(groupPosition).get(childPosition).get("name"),Toast.LENGTH_LONG).show();
 
@@ -636,6 +748,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         }
         return insts;
     }
+
 }
 
 
