@@ -53,34 +53,40 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     // create a collection of items for the City group
     ArrayList<Map<String, String>> сhildDataItemList = new ArrayList<>();
     private String[] mTypeVehicleArray = new String[]{"A", "B", "C", "D"};
-    private String[] mTransmissionArray = new String[]{"Automatic", "Manual"};
-    private String[] mExperienceArray = new String[]{"1-4", "5-8", "9-12", "13 >"};
+    private String[] mTransmissionArray = new String[]{"automatic", "manual"};
+    private String[] mExperienceArray = new String[]{">1", ">5", ">9", ">13"};
     private String[] mRatingArray = new String[]{"0-19", "20-39", "40-59", "60-99", "100 >"};
-    private String[] mSexArray = new String[]{ "male", "female"};
+
     //varible
     TextView quantity;
     Map<String, String> map;
 
     ArrayList<Instructors> insts = new ArrayList<Instructors>();
-    ArrayList<Instructors> instsFilter = new ArrayList<Instructors>();
+
 
     Cursor cursor;
     TextView selection;
     TextView selectionSex;
+    TextView selectionTrans;
+    TextView selectionExper;
     TextView selectionTypeVehicle;
 
     String  str="City :";
     String  strSex="Gender :";
+    String  strTrans="Transmission :";
     String  strVehicle="Type vehicle :";
+    String  strExper="Experience :";
     ArrayList<String> cityinfo=new ArrayList<>();
     ArrayList<String> sexinfo=new ArrayList<>();
+    ArrayList<String> transmissioninfo=new ArrayList<>();
+    ArrayList<String> experinfo=new ArrayList<>();
     JazzyListView lvMain;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-    InstructorDbHelper mdHelper;
+
     SQLiteDatabase db;
 
 
@@ -137,7 +143,8 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                selectionSex.setVisibility(View.GONE);
                cityinfo.clear();
                sexinfo.clear();
-
+               transmissioninfo.clear();
+               experinfo.clear();
                insts.clear();
                 db=instructorsDB.getMdHelper().getWritableDatabase();
 
@@ -162,6 +169,8 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                 String strinTemp;
                 StringBuilder cityStr= new StringBuilder();
                 StringBuilder sexStr= new StringBuilder();
+                StringBuilder transStr= new StringBuilder();
+                StringBuilder experStr= new StringBuilder();
                 for(int i=0;i<cityinfo.size();i++){
                     strinTemp="'"+cityinfo.get(i)+"'";
                     cityStr.append(strinTemp+",");
@@ -170,65 +179,26 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                     strinTemp="'"+sexinfo.get(i)+"'";
                     sexStr.append(strinTemp+",");
                 }
+                for(int i=0;i<transmissioninfo.size();i++){
+                    strinTemp="'"+transmissioninfo.get(i)+"'";
+                    transStr.append(strinTemp+",");
+                }
+                for(int i=0;i<experinfo.size();i++){
+                    strinTemp=experinfo.get(i);
+                    experStr.append(strinTemp);
+                }
                 sexStr.deleteCharAt(sexStr.length()-1);
                 cityStr.deleteCharAt(cityStr.length()-1);
+                transStr.append(" 'automatic manual'");
+
                 db=instructorsDB.getMdHelper().getWritableDatabase();
                 Cursor cursor = null;
-               /* Cursor c = sqlDatabase.rawQuery("select docid as _id, recipeID from " + TABLE_RECIPE_NAME +
-                        " where " + KEY_ownerID + " = ? AND  " + KEY_partnerID + " = ? AND  " + KEY_advertiserID + " = ? AND " + KEY_chefID + " = ?", new String[] { ownerID, partnerID, advertiserID, chefID });*/
 
-              //  cursor = db.query("Instructor", null, "city=? and sex=?", new String[]{"'Netania','Tel Aviv'","male"}, null, null, null);
-                cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + " where " +" city IN("+cityStr+")"+" and "+ " sex IN("+sexStr+")", null);
+                cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + " where " +" city IN("+cityStr+")"+" and "+ " sex IN("+sexStr+")"+" and transmission IN("+transStr+")"+" and experience "+experStr, null);
                 fillData(insts, cursor);
-                /*if(cityinfo.size()!=0) {
-                    if(sexinfo.size()!=0) {
-                        q = "city=?"+" and "+"sex =?";
-                         str=new String[]{cityinfo.get(k),sexinfo.get(j)};
-                    }
-                    else{
-                        q = "city=?";
-                        str=new String[]{cityinfo.get(k)};
-                    }
-                }
-                else{
-                    q="sex=?";
-                    str=new String[]{sexinfo.get(j)};
-                }
 
+                //cityinfo.clear();
 
-                do{
-                    do{
-                        cursor = db.query("Instructor", null, q, str, null, null, null);
-                        fillData(insts, cursor);
-                        ++j;
-                    }while(j<sexinfo.size());
-                    ++k;
-
-                }while(k<cityinfo.size());
-                q=null;
-                str=null;*/
-                /*for(int i=0;i<cityinfo.size();i++) {
-
-                for(int j=0;j<sexinfo.size();j++) {
-                    //  cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + " where " +   sexinfo.get(j) , null);
-                    cursor = db.query("Instructor", null, "city=? and sex = ?", new String[]{cityinfo.get(i),sexinfo.get(j)}, null, null, null);
-                    fillData(insts, cursor);
-                }
-                }*/
-                /*for(int i=0;i<cityinfo.size();i++) {
-                    for(int j=0;j<sexinfo.size();j++) {
-                        //  cursor = db.query("Instructor", null, "city = ?", new String[]{cityinfo.get(i)}, null, null, null);
-                        cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + " where " +"'" +cityinfo.get(i) +"'"+" AND "+"'"+ sexinfo.get(j)+"'", null);
-                    }
-                        fillData(insts, cursor);
-                }*/
-                /*for(int i=0;i<cityinfo.size();i++) {
-                    cursor = db.rawQuery("Select * from "+ InstructorContract.InstructorEntry.TABLE_NAME+" where "+cityinfo.get(i)+" experience<'5'", null);
-                    fillData(insts, cursor);
-                }
-                cursor = db.rawQuery("Select * from Instructor where city='Tel Aviv' and experience<'5'", null);
-                fillData(insts, cursor);*/
-                cityinfo.clear();
                 boxAdapter.notifyDataSetChanged();
                 quantity.setText(String.valueOf(insts.size()) + getString(R.string.Instructors));
 
@@ -282,6 +252,9 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         selection=(TextView)findViewById(R.id.text_view_city);
         selectionSex=(TextView)findViewById(R.id.text_view_gender);
         selectionTypeVehicle=(TextView)findViewById(R.id.text_view_type_vechile);
+        selectionTrans=(TextView)findViewById(R.id.text_view_transmission);
+        selectionExper=(TextView)findViewById(R.id.text_view_experience);
+
 
         /* expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener(){*/
 
@@ -291,23 +264,6 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-                /*if(сhildDataList.get(groupPosition).equals(mGroupsArray[0])) {
-                    for (int i = 0; i < insts.size(); i++) {
-                        if (insts.get(i).getCity().equals(сhildDataList.get(groupPosition).get(childPosition).get("name"))) {
-                            if (instsFilter.contains(insts.get(i))) {
-                                instsFilter.remove(insts.get(i));
-                            } else {
-
-                                instsFilter.add(insts.get(i));
-
-                            }
-                        } else {
-                            i++;
-                        }
-                    }
-                }
-
-*/
                if(groupDataList.get(groupPosition).get("groupName").equals(mGroupsArray[0])) {
                    if (cityinfo.contains(сhildDataList.get(groupPosition).get(childPosition).get("name"))) {
 
@@ -326,6 +282,28 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                         sexinfo.add(сhildDataList.get(groupPosition).get(childPosition).get("name"));
                     }
                 }
+                if(groupDataList.get(groupPosition).get("groupName").equals(mGroupsArray[2])) {
+                    //  transmissioninfo.add("automatic manual");
+                    if (transmissioninfo.contains(сhildDataList.get(groupPosition).get(childPosition).get("name"))) {
+
+                        transmissioninfo.remove(сhildDataList.get(groupPosition).get(childPosition).get("name"));
+
+                    } else {
+                        transmissioninfo.add(сhildDataList.get(groupPosition).get(childPosition).get("name"));
+                    }
+                }
+                if(groupDataList.get(groupPosition).get("groupName").equals(mGroupsArray[3])) {
+                    //  transmissioninfo.add("automatic manual");
+                    if (experinfo.size() <=1) {
+                        if (experinfo.contains(сhildDataList.get(groupPosition).get(childPosition).get("name"))) {
+
+                            experinfo.remove(сhildDataList.get(groupPosition).get(childPosition).get("name"));
+
+                        } else {
+                            experinfo.add(сhildDataList.get(groupPosition).get(childPosition).get("name"));
+                        }
+                    }
+                }
 
                     for (int j = 0; j < cityinfo.size(); j++) {
                         str = str + (cityinfo.get(j)) + ", ";
@@ -335,11 +313,21 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                     strSex = strSex + (sexinfo.get(j)) + ", ";
 
                 }
+                for (int j = 0; j < transmissioninfo.size(); j++) {
+                    strTrans = strTrans + (transmissioninfo.get(j)) + ", ";
+
+                }
+                for (int j = 0; j < experinfo.size(); j++) {
+                    strExper = strExper + (experinfo.get(j));
+
+                }
                // Toast.makeText(getApplicationContext(),instsFilter.get(0).getCity()+""+groupPosition+сhildDataList.get(groupPosition)+" trulzlz"+сhildDataList.get(groupPosition).get(childPosition).get("name"),Toast.LENGTH_LONG).show();
 
                 /*strBilder.append(сhildDataList.get(groupPosition).get(childPosition).get("name")+", ");*/
                 selection.setText(str);
                 selectionSex.setText(strSex);
+                selectionTrans.setText(strTrans);
+                selectionExper.setText(strExper);
                 if(cityinfo.size()!=0) {
                     selection.setVisibility(View.VISIBLE);
                 }
@@ -352,8 +340,22 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                 else{
                     selectionSex.setVisibility(View.GONE);
                 }
+                if(transmissioninfo.size()!=0) {
+                    selectionTrans.setVisibility(View.VISIBLE);
+                }
+                else{
+                    selectionTrans.setVisibility(View.GONE);
+                }
+                if(experinfo.size()!=0) {
+                    selectionExper.setVisibility(View.VISIBLE);
+                }
+                else{
+                    selectionExper.setVisibility(View.GONE);
+                }
                 str="City :";
                 strSex="Gender :";
+                strTrans="Transmission :";
+                strExper="Experience :";
 
               // Toast.makeText(getApplicationContext(),instsFilter.get(0).getCity()+""+"сhildDataList.get(groupPosition) "+сhildDataList.get(groupPosition)+" trulzlz"+сhildDataList.get(groupPosition).get(childPosition).get("name"),Toast.LENGTH_LONG).show();
 
@@ -361,7 +363,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
             //    insts.addAll(instsFilter);
                 boxAdapter.notifyDataSetChanged();
                 quantity.setText(String.valueOf(insts.size()) + getString(R.string.Instructors));
-                Log.v("Data list",groupDataList.get(groupPosition).get("groupName"));
+                Log.v("Data list",groupDataList.get(groupPosition).get("groupName")+" "+transmissioninfo.size());
 
                 return false;
 
