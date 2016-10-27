@@ -21,12 +21,15 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
 
+
        >
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical"
           android:layout_marginTop="50dp"
+          android:visibility="visible"
+          android:id="@+id/filter"
           >
       <LinearLayout
           android:layout_width="match_parent"
@@ -136,6 +139,91 @@
               android:choiceMode="multipleChoice"
               >
           </ExpandableListView>
+
+      </LinearLayout>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          android:visibility="gone"
+          android:id="@+id/sort"
+          android:paddingLeft="@dimen/activity_horizontal_margin"
+          android:paddingRight="@dimen/activity_horizontal_margin"
+          >
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+
+              android:layout_marginTop="50dp"
+              android:padding="16dp"
+              android:paddingRight="8dp"
+              >
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  >
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Sorting direction :"
+                  android:layout_marginTop="8dp"
+                  android:textSize="16sp"
+                  android:layout_gravity="center_vertical" />
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="up"
+                      android:layout_marginTop="8dp"
+                      android:textSize="16sp"
+                      android:layout_gravity="center_vertical"
+                      android:textColor="@color/colorAccent"
+                      android:visibility="gone"
+                      android:id="@+id/textUp"
+                      />
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="down"
+                      android:layout_marginTop="8dp"
+                      android:textSize="16sp"
+                      android:layout_gravity="center_vertical"
+                      android:textColor="@color/colorAccent"
+                      android:visibility="gone"
+                      android:id="@+id/textDown"
+                      />
+              </LinearLayout>
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  >
+              <Button
+                  android:layout_width="wrap_content"
+                  android:layout_height="0dp"
+                  android:text="up"
+                  android:layout_weight="0.5"
+                  android:id="@+id/bUp"
+                  />
+
+
+              <Button
+                  android:layout_width="wrap_content"
+                  android:layout_height="0dp"
+                  android:text="down"
+                  android:layout_weight="0.5"
+                  android:id="@+id/bDown"
+             />
+              </LinearLayout>
+          </LinearLayout>
+          <ListView
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id="@+id/instrSort"
+              android:layout_marginTop="24dp"
+              />
+
 
       </LinearLayout>
   </android.support.design.widget.NavigationView>

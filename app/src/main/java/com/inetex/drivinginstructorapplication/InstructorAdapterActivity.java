@@ -3,23 +3,34 @@ package com.inetex.drivinginstructorapplication;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
@@ -35,12 +46,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InstructorAdapterActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-
-
+public class InstructorAdapterActivity extends AppCompatActivity implements AdapterView.OnItemClickListener,View.OnClickListener {
+    private FloatingActionButton fabIA,fabIA1,fabIA2;
+    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    private Boolean isFabOpen = false;
     BoxAdapter boxAdapter;
     Intent intent;
-
+    ImageView up;
+    ImageView down;
     //varible
     private String[] mGroupsArray = new String[]{"City", "Type Vechile", "Tramsmission", "Experience", "Rating", "Gender"};
 
@@ -54,6 +67,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     private String[] mTransmissionArray = new String[]{"automatic", "manual"};
     private String[] mExperienceArray = new String[]{">1", ">5", ">9", ">13"};
     private String[] mRatingArray = new String[]{">2",">3",">4",">5",">6", ">7", ">8", ">9"};
+    private String[] mSortArray= new String[]{"sort by city","sort by experience","sort by rating","sort by price"};
 
 
     //varible
@@ -70,6 +84,8 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     TextView selectionExper;
     TextView selectionRating;
     TextView selectionTypeVehicle;
+    TextView tvd;
+    TextView tvu;
 
     String  str="City :";
     String  strSex="Gender :";
@@ -77,6 +93,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     String  strVehicle="Type vehicle :";
     String  strExper="Experience :";
     String  strRating="Rating :";
+    String typeSort=" ASC ";
     ArrayList<String> cityinfo=new ArrayList<>();
     ArrayList<String> sexinfo=new ArrayList<>();
     ArrayList<String> transmissioninfo=new ArrayList<>();
@@ -119,13 +136,34 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         }*/
 
         //----AsyncTask filldata
-       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fabIA = (FloatingActionButton) findViewById(R.id.fabIA);
+        fabIA1 = (FloatingActionButton) findViewById(R.id.fabIA1);
+        fabIA2 = (FloatingActionButton) findViewById(R.id.fabIA2);
+
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
+
+        fabIA.setOnClickListener(this);
+        fabIA1.setOnClickListener(this);
+        fabIA2.setOnClickListener(this);
+       /*fabIA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+               *//* DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.openDrawer(Gravity.LEFT);*//*
+                animateFAB();
+            }
+        });*/
+        /*fabIA1.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
 
             }
-        }); */
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -142,11 +180,13 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
             public void onClick(View v) {
                selection.setText("");
                selectionSex.setText("");
+               selectionTrans.setText("");
                selection.setVisibility(View.GONE);
                selectionSex.setVisibility(View.GONE);
                selectionTypeVehicle.setVisibility(View.GONE);
                selectionExper.setVisibility(View.GONE);
                selectionRating.setVisibility(View.GONE);
+               selectionTrans.setVisibility(View.GONE);
                cityinfo.clear();
                sexinfo.clear();
                transmissioninfo.clear();
@@ -216,6 +256,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                 }
                 transStr.append(" 'automatic manual'");
                 StringBuilder query = new StringBuilder();
+                String where="";
                 if(cityinfo.size()!=0) {
                     query.append(" city IN("+cityStr+")");
                 }
@@ -234,6 +275,10 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                 if(typeVinfo.size()!=0) {
                     query.append( " and vehicle IN("+typeVStr+") ");
                 }
+                if(query.length()>0){
+                    where=" where ";
+                }
+
                 String stringQuery=query.toString();
                 db=instructorsDB.getMdHelper().getWritableDatabase();
                 Cursor cursor = null;
@@ -246,7 +291,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                         +" and rating "+ratingStr+" "
                         +" and vehicle IN("+typeVStr+") "
                         , null);*/
-                cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + " where "
+                cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + where
                                 +stringQuery, null);
                 fillData(insts, cursor);
 
@@ -255,6 +300,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                 boxAdapter.notifyDataSetChanged();
                 quantity.setText(String.valueOf(insts.size()) + getString(R.string.Instructors));
                 query=null;
+                where=null;
 
             }
         });
@@ -267,6 +313,69 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         lvMain.setOnItemClickListener(this);
         lvMain.setChoiceMode(JazzyListView.CHOICE_MODE_MULTIPLE);
         lvMain.setAdapter(boxAdapter);
+        // listView sort
+        ListView lvSort=(ListView)findViewById(R.id.instrSort);
+        lvSort.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        ArrayAdapter<String> adapterSort= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_checked,mSortArray);
+        Button bUp= (Button)findViewById(R.id.bUp);
+        Button bDown= (Button)findViewById(R.id.bDown);
+         tvd= (TextView)findViewById(R.id.textDown);
+         tvu= (TextView)findViewById(R.id.textUp);
+        bUp.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+
+                tvu.setVisibility(View.VISIBLE);
+                tvd.setVisibility(View.GONE);
+                typeSort=" DESC ";
+            }
+        });
+        bDown.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+
+                tvd.setVisibility(View.VISIBLE);
+                tvu.setVisibility(View.GONE);
+                typeSort=" ASC ";
+            }
+        });
+        lvSort.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CheckedTextView checkedTextView=(CheckedTextView)view.findViewById(android.R.id.text1);
+                checkedTextView.isChecked();
+                insts.clear();
+                String stringQuery=checkedTextView.getText().toString();
+                String sort=null;
+                if(stringQuery.equals(mSortArray[0])){
+                    sort=" city ";
+                }
+                if(stringQuery.equals(mSortArray[1])){
+                    sort=" experience ";
+                }
+                if(stringQuery.equals(mSortArray[2])){
+                    sort=" rating ";
+                }
+                if(stringQuery.equals(mSortArray[3])){
+                    sort=" price ";
+                }
+                db=instructorsDB.getMdHelper().getWritableDatabase();
+
+                Cursor cursor = db.query("Instructor ", null, null, null, null, null, sort+   typeSort);
+                fillData(insts, cursor);
+                boxAdapter.notifyDataSetChanged();
+                quantity.setText(String.valueOf(insts.size()) + getString(R.string.Instructors));
+                sort=null;
+
+            }
+
+
+        });
+        lvSort.setAdapter(adapterSort);
+        // listView sort
+
 
         //------------ExpandbleListView City, Vechicle,Transsmission,Experrience,Rating--------------------
 
@@ -489,6 +598,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
 
     @Override
     public void onBackPressed() {
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -748,6 +858,65 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         }
         return insts;
     }
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        LinearLayout ll= (LinearLayout)findViewById(R.id.filter);
+        LinearLayout ll2= (LinearLayout)findViewById(R.id.sort);
+        switch (id){
+            case R.id.fabIA:
+                animateFAB();
+                break;
+            case R.id.fabIA1:
+
+                ll.setVisibility(View.VISIBLE);
+                ll2.setVisibility(View.GONE);
+                drawer.openDrawer(Gravity.LEFT);
+
+                Log.d("Fab", "Side LeftPanel Filter");
+                break;
+            case R.id.fabIA2:
+                ll.setVisibility(View.GONE);
+                ll2.setVisibility(View.VISIBLE);
+                drawer.openDrawer(Gravity.LEFT);
+                Log.d("Fab", "Side Right panel");
+                break;
+
+        }
+
+    }
+    public void animateFAB(){
+
+        if(isFabOpen){
+
+            fabIA.startAnimation(rotate_backward);
+            fabIA1.startAnimation(fab_close);
+            fabIA2.startAnimation(fab_close);
+
+            fabIA1.setClickable(false);
+            fabIA2.setClickable(false);
+
+            isFabOpen = false;
+            Log.d("Fab", "close");
+
+        } else {
+
+            fabIA.startAnimation(rotate_forward);
+            fabIA1.startAnimation(fab_open);
+            fabIA2.startAnimation(fab_open);
+
+            fabIA1.setClickable(true);
+            fabIA2.setClickable(true);
+
+            isFabOpen = true;
+            Log.d("Fab","open");
+
+        }
+    }
+
+
 
 }
 

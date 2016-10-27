@@ -22,13 +22,38 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_instructor_adapter" />
-
-   <!-- <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabIA2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="160dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:visibility="invisible"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:src="@mipmap/ic_sort_white_24dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabIA1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="90dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:pressedTranslationZ="12dp"
+        android:src="@mipmap/ic_filter_list_white_24dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabIA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
+        app:elevation="6dp"
+        app:backgroundTint="@color/colorAccent"
+        app:pressedTranslationZ="12dp"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />-->
-
+        android:src="@mipmap/ic_search_white_24dp" />
 </android.support.design.widget.CoordinatorLayout>
