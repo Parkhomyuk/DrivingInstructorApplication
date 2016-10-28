@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -77,14 +78,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.fab4:
-                progressBar.setVisibility(ProgressBar.VISIBLE);
-               Intent intentAdapt = new Intent(MainActivity.this,InstructorAdapterActivity.class);
+                Intent intentAdapt = new Intent(MainActivity.this,InstructorAdapterActivity.class);
 
-                
                 startActivity(intentAdapt);
+
                 Log.d("AdapterInstructors", "Fab 4");
 
-                progressBar.setVisibility(ProgressBar.INVISIBLE);
+
                 break;
         }
 

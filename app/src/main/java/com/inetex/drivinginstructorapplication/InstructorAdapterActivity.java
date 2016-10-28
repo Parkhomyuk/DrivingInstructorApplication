@@ -3,7 +3,6 @@ package com.inetex.drivinginstructorapplication;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -26,14 +25,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
+
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
-
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -52,9 +48,8 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     private Boolean isFabOpen = false;
     BoxAdapter boxAdapter;
     Intent intent;
-    ImageView up;
-    ImageView down;
-    //varible
+    public static int CHOOSE_THIEF = 100;
+       //varible
     private String[] mGroupsArray = new String[]{"City", "Type Vechile", "Tramsmission", "Experience", "Rating", "Gender"};
 
     final ArrayList<Map<String, String>> groupDataList = new ArrayList<>();
@@ -73,10 +68,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     //varible
     TextView quantity;
     Map<String, String> map;
-
     ArrayList<Instructors> insts = new ArrayList<Instructors>();
-
-
     Cursor cursor;
     TextView selection;
     TextView selectionSex;
@@ -122,18 +114,6 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         instructorsDB.execute();
         final GetInstructor instructors = new GetInstructor();
         instructors.execute();
-       // mdHelper=getInstructorsDB.getMdHelper();
-       /* mdHelper = new InstructorDbHelper(this);
-        try {
-            mdHelper.createDataBase();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
-        try {
-            mdHelper.openDataBase();
-        } catch (SQLException sqle) {
-            throw sqle;
-        }*/
 
         //----AsyncTask filldata
         fabIA = (FloatingActionButton) findViewById(R.id.fabIA);
@@ -149,22 +129,6 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         fabIA.setOnClickListener(this);
         fabIA1.setOnClickListener(this);
         fabIA2.setOnClickListener(this);
-       /*fabIA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               *//* DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawer.openDrawer(Gravity.LEFT);*//*
-                animateFAB();
-            }
-        });*/
-        /*fabIA1.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-
-            }
-        });*/
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -261,19 +225,44 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                     query.append(" city IN("+cityStr+")");
                 }
                 if(sexinfo.size()!=0) {
-                    query.append(" and sex IN("+sexStr+")");
+                    if( query.length()<1){
+                        query.append("  sex IN("+sexStr+")");
+                    }
+                    else {
+                        query.append(" and sex IN(" + sexStr + ")");
+                    }
                 }
                 if(transmissioninfo.size()!=0) {
-                    query.append( " and transmission IN("+transStr+")");
+                    if( query.length()<1) {
+                        query.append(" transmission IN(" + transStr + ")");
+                    }
+                    else{
+                        query.append( " and transmission IN("+transStr+")");
+                    }
                 }
                 if(experinfo.size()!=0) {
-                    query.append( " and experience "+experStr+" ");
+                    if( query.length()<1) {
+                        query.append(" experience " + experStr + " ");
+                    }
+                    else{
+                        query.append(" and experience " + experStr + " ");
+                    }
                 }
                 if(ratinginfo.size()!=0) {
-                    query.append( " and rating "+ratingStr+" ");
+                    if( query.length()<1) {
+                        query.append(" rating " + ratingStr + " ");
+                    }else {
+                        query.append(" and rating " + ratingStr + " ");
+
+                    }
                 }
                 if(typeVinfo.size()!=0) {
-                    query.append( " and vehicle IN("+typeVStr+") ");
+                    if( query.length()<1) {
+                        query.append(" vehicle IN(" + typeVStr + ") ");
+                    }
+                    else{
+                        query.append(" and vehicle IN(" + typeVStr + ") ");
+                    }
                 }
                 if(query.length()>0){
                     where=" where ";
@@ -283,19 +272,9 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                 db=instructorsDB.getMdHelper().getWritableDatabase();
                 Cursor cursor = null;
 
-             /*   cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + " where "
-                        +" city IN("+cityStr+")"
-                        +" and sex IN("+sexStr+")"
-                        +" and transmission IN("+transStr+")"
-                        +" and experience "+experStr+" "
-                        +" and rating "+ratingStr+" "
-                        +" and vehicle IN("+typeVStr+") "
-                        , null);*/
-                cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + where
+                 cursor = db.rawQuery("Select * from " + InstructorContract.InstructorEntry.TABLE_NAME + where
                                 +stringQuery, null);
                 fillData(insts, cursor);
-
-                //cityinfo.clear();
 
                 boxAdapter.notifyDataSetChanged();
                 quantity.setText(String.valueOf(insts.size()) + getString(R.string.Instructors));
@@ -419,11 +398,6 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         selectionExper=(TextView)findViewById(R.id.text_view_experience);
         selectionRating=(TextView)findViewById(R.id.text_view_rating);
 
-
-
-        /* expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener(){*/
-
-
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
 
@@ -526,9 +500,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                         strVehicle = strVehicle + (typeVinfo.get(j) + " , ");
                     }
                 }
-               // Toast.makeText(getApplicationContext(),instsFilter.get(0).getCity()+""+groupPosition+сhildDataList.get(groupPosition)+" trulzlz"+сhildDataList.get(groupPosition).get(childPosition).get("name"),Toast.LENGTH_LONG).show();
 
-                /*strBilder.append(сhildDataList.get(groupPosition).get(childPosition).get("name")+", ");*/
                 selection.setText(str);
                 selectionSex.setText(strSex);
                 selectionTrans.setText(strTrans);
@@ -578,10 +550,6 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                 strRating="Rating :";
                 strVehicle="Type vihecle :";
 
-              // Toast.makeText(getApplicationContext(),instsFilter.get(0).getCity()+""+"сhildDataList.get(groupPosition) "+сhildDataList.get(groupPosition)+" trulzlz"+сhildDataList.get(groupPosition).get(childPosition).get("name"),Toast.LENGTH_LONG).show();
-
-               // insts.clear();
-            //    insts.addAll(instsFilter);
                 boxAdapter.notifyDataSetChanged();
                 quantity.setText(String.valueOf(insts.size()) + getString(R.string.Instructors));
                 Log.v("Data list",groupDataList.get(groupPosition).get("groupName")+" "+transmissioninfo.size());
@@ -634,15 +602,15 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Instructors instructors = insts.get(position);
 
-        /*Toast.makeText(this, instructors.toString(), Toast.LENGTH_LONG).show();*/
+
         intent = new Intent(InstructorAdapterActivity.this, TabInstructorActivity.class);
-        /*name=(TextView)findViewById(R.id.tvName);*/
+
         String n = instructors.name;
-        /*city=(TextView)findViewById(R.id.tvCity);*/
+
         String em=instructors.email;
         String c = instructors.city;
         int e = instructors.experience;
-        int r = instructors.rating;
+        float r = instructors.rating;
         int a = instructors.age;
         String image = instructors.avatar;
         int price = instructors.pricePerHours;
@@ -670,7 +638,9 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
         intent.putExtra("sex", sex);
 
 
-        startActivity(intent);
+        //startActivity(intent);
+        startActivityForResult(intent, CHOOSE_THIEF);
+        overridePendingTransition(R.anim.diagonal_translate,R.anim.alpha);
     }
 
     @Override
@@ -835,7 +805,7 @@ public class InstructorAdapterActivity extends AppCompatActivity implements Adap
                     i.setAvatar(cursor.getString(3));
                     i.setAge(cursor.getInt(4));
                     i.setExperience(cursor.getInt(5));
-                    i.setRating(cursor.getInt(6));
+                    i.setRating(cursor.getFloat(6));
                     i.setTypeVehicle(cursor.getString(7));
                     i.setPricePerHours(cursor.getInt(8));
                     i.setUrl(cursor.getString(9));

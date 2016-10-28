@@ -7,7 +7,7 @@ public class Instructors {
     String avatar;
     int age;
     int experience;
-    int rating;
+    float rating;
     String typeVehicle;
     int pricePerHours;
     String url;
@@ -20,7 +20,7 @@ public class Instructors {
     String transmission;
     String sex;
 
-    public Instructors(String name, String city, String avatar, int age, int experience, int rating, String typeVehicle, int pricePerHours, String url, String workingDays, String workingHours, String phon, String school, String email, String password,String tranmission,String sex) {
+    public Instructors(String name, String city, String avatar, int age, int experience, float rating, String typeVehicle, int pricePerHours, String url, String workingDays, String workingHours, String phon, String school, String email, String password,String tranmission,String sex) {
         this.name = name;
         this.city = city;
         this.avatar = avatar;
@@ -79,7 +79,7 @@ public class Instructors {
         return age;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
@@ -160,7 +160,7 @@ public class Instructors {
         this.age = age;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 

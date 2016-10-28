@@ -169,7 +169,16 @@
                     android:textSize="16sp"
                     android:textColor="#060505"
                     android:layout_marginTop="8dp" />
+
                     </LinearLayout>
+                <RatingBar
+                    android:id="@+id/ratingBar_small"
+                    android:rating="0"
+                    android:stepSize="0.5"
+                    android:numStars="5"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

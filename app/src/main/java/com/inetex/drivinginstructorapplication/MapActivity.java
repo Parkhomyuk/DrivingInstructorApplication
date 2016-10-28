@@ -377,7 +377,7 @@ final ArrayList<Instructors> instructorsTemp=new ArrayList<>();
 
                 String c = instructors.city;
                 int e = instructors.experience;
-                int r = instructors.rating;
+                float r = instructors.rating;
                 int a = instructors.age;
                 String image = instructors.avatar;
                 int price = instructors.pricePerHours;

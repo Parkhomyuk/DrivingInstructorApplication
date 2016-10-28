@@ -9,6 +9,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.graphics.drawable.Drawable;
 import android.widget.Toast;
@@ -55,7 +58,7 @@ public class TabInstructorActivity extends AppCompatActivity {
         txtName=getIntent().getStringExtra("name");
         String txtCity=getIntent().getStringExtra("city");
         int txtExp=getIntent().getIntExtra("exper",0);
-        int txtRat=getIntent().getIntExtra("rating",0);
+        float txtRat=getIntent().getFloatExtra("rating",2);
         int txtAge=getIntent().getIntExtra("age",0);
         txtEm=getIntent().getStringExtra("email");
 
@@ -81,13 +84,13 @@ public class TabInstructorActivity extends AppCompatActivity {
         age.setText(txtAge+"");
         image=(ImageView) findViewById(R.id.im);
        loadImageFromAsset(avatar);
-       /* Picasso.with(this)
-                .load("/assets/angela.jpg")
 
-                .placeholder(R.drawable.ic_account_circle_black_24dp)
-                .error(R.drawable.ic_cancel_black_24dp)
-                .into(image);*/
-Toast.makeText(this,txts+"Tru la la "+txtr,Toast.LENGTH_LONG).show();
+        final RatingBar smallRatingBar = (RatingBar) findViewById(R.id.ratingBar_small);
+
+        smallRatingBar.setNumStars(5);
+        smallRatingBar.setStepSize(0.5f);
+        smallRatingBar.setRating(txtRat/2);
+
 
      TextView txtPrice=(TextView)findViewById(R.id.atPrice);
         txtPrice.setText(priceText);
